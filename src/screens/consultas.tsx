@@ -16,7 +16,7 @@ function ConsultasConteudo() {
   const [id, setId] = useState<string>("");
   const [loadingId, setLoadingId] = useState<string>("");
 
-  const listaMarcacoes = marcacoes.filter((e) => e.status === "REALIZADO");
+  // const listaMarcacoes = marcacoes.filter((e) => e.status === "REALIZADO");
 
   const { editar, error } = useEditMarcacao();
 

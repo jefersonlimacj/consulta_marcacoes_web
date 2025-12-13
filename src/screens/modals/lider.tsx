@@ -1,7 +1,7 @@
 import { Loader2, Users2 } from "lucide-react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useCreateLider, useLideres } from "../../hook/useLider";
+import { useCreateLider } from "../../hook/useLider";
 
 export function BtnCadastrarLider() {
   const [open, setOpen] = useState<boolean>(false);

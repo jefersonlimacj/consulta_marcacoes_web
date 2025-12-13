@@ -12,6 +12,7 @@ const GET_MARCACOES = gql`
         dataNascimento
         cpf
         telefone
+        telefoneS
       }
       especialidade {
         nome
@@ -31,6 +32,7 @@ const GET_MARCACOES = gql`
       status
       tipoExame
       observacoes
+      retorno
     }
   }
 `;
@@ -42,6 +44,7 @@ interface Paciente {
   dataNascimento: string | null;
   cpf: string | null;
   telefone: string | null;
+  telefoneS: string | null;
 }
 
 interface Especialidade {
@@ -85,13 +88,64 @@ export function useMarcacoes() {
     }
   );
 
-  const marcacoes: Marcacao[] = data?.marcacoes ?? [];
-
   return {
-    marcacoes: marcacoes,
+    marcacoes: data?.marcacoes || [],
     loading,
     error,
     refetch: refetch || Promise.resolve(),
+  };
+}
+
+const CREATE_MARCACAO = gql`
+  mutation CriarMarcacao($input: MarcacaoInput) {
+    criarMarcacao(input: $input) {
+      id
+    }
+  }
+`;
+
+interface MarcacaoInput {
+  dataAtendimento: string;
+  dataMarcada: string;
+  especialidadeId: string;
+  liderId: string;
+  medicoId: string;
+  observacoes: string;
+  pacienteId: string;
+  status: string;
+  tipoExame: string;
+  retorno: boolean;
+}
+
+interface MarcacaoInputRes {
+  id: string;
+}
+
+export function useCreateMarcacao() {
+  const [criarMarcacao, { data, loading, error }] = useMutation<
+    MarcacaoInputRes,
+    { input: MarcacaoInput }
+  >(CREATE_MARCACAO);
+
+  const criar = async (input: MarcacaoInput) => {
+    const res = await criarMarcacao({
+      variables: {
+        input,
+      },
+    });
+
+    if (res?.data?.id) {
+      return res?.data?.id;
+    } else {
+      console.error(error);
+    }
+  };
+
+  return {
+    criar,
+    data: data?.id,
+    loading,
+    error,
   };
 }
 

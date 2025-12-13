@@ -1,42 +1,62 @@
-import { ActivityIcon, Loader2 } from "lucide-react";
+import { Loader2, UserRoundPlus } from "lucide-react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useCreateEspecialidade } from "../../hook/useEspecialidade";
+import { useCreatePaciente } from "../../hook/usePaciente";
 
-export function BtnCadastrarEspecialidade() {
+export function BtnCadastrarPaciente() {
   const [open, setOpen] = useState<boolean>(false);
   const [nome, setNome] = useState<string>("");
+  const [dataNascimento, setDataNascimento] = useState<string>("");
+  const [nSus, setNSus] = useState<string>("");
+  const [cpf, setCpf] = useState<string>("");
+  const [telefone, setTelefone] = useState<string>("");
+  const [telefoneS, setTelefoneS] = useState<string>("");
 
   const [espera, setEspera] = useState<boolean>(false);
 
-  const { criar, error } = useCreateEspecialidade();
+  const { criar, error } = useCreatePaciente();
 
-  const criarEspecialidadeFunc = async () => {
+  const criarPacienteFunc = async () => {
     setEspera(true);
-    if (!nome) {
-      alert("Insira o nome da Especialidade");
+    if (!nome || !dataNascimento || !nSus || !cpf || !telefone) {
+      alert("Preencha Todos os Campos");
     }
 
     const res = await criar({
       nome,
+      dataNascimento: new Date(dataNascimento).toISOString(),
+      nSus,
+      cpf,
+      telefone,
+      telefoneS,
     });
 
     if (res?.id) {
       setOpen(false);
       setEspera(false);
       setNome("");
+      setDataNascimento("");
+      setNSus("");
+      setCpf("");
+      setTelefone("");
+      setTelefoneS("");
     } else {
       alert(error);
       setOpen(false);
       setEspera(false);
       setNome("");
+      setDataNascimento("");
+      setNSus("");
+      setCpf("");
+      setTelefone("");
+      setTelefoneS("");
     }
   };
   return (
     <>
       <BtnCadastrar onClick={() => setOpen(true)}>
-        <ActivityIcon size={40} />
-        <p>Especialidade</p>
+        <UserRoundPlus size={40} />
+        <p>Paciente</p>
       </BtnCadastrar>
       <div
         style={{
@@ -74,7 +94,7 @@ export function BtnCadastrarEspecialidade() {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <p>Cadastro de Novas Especialidades</p>
+          <p>Cadastro de Novos Pacientes</p>
           <TextoEntrada
             placeholder="Insira aqui o nome"
             type="text"
@@ -82,7 +102,54 @@ export function BtnCadastrarEspecialidade() {
             value={nome}
             onChange={(e) => setNome(e.target.value)}
           />
-          <button disabled={espera} onClick={() => criarEspecialidadeFunc()}>
+          <TextoEntrada
+            placeholder="Insira aqui nº do SUS"
+            type="text"
+            largura="100%"
+            value={nSus}
+            onChange={(e) => setNSus(e.target.value)}
+          />
+          <TextoEntrada
+            placeholder="Insira aqui o nº do CPF"
+            type="text"
+            largura="100%"
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
+          />
+          <TextoEntrada
+            placeholder="Insira aqui o Contato 1"
+            type="text"
+            largura="100%"
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)}
+          />
+          <TextoEntrada
+            placeholder="Insira aqui o Contato 2"
+            type="text"
+            largura="100%"
+            value={telefoneS}
+            onChange={(e) => setTelefoneS(e.target.value)}
+          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <p>Data de Nascimento</p>
+            <TextoEntrada
+              placeholder="Insira aqui o Contato 2"
+              type="date"
+              largura="60%"
+              value={dataNascimento}
+              onChange={(e) => setDataNascimento(e.target.value)}
+            />
+          </div>
+
+          <button disabled={espera} onClick={() => criarPacienteFunc()}>
             {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
           </button>
         </div>

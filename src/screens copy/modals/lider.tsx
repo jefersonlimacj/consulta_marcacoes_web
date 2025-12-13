@@ -1,42 +1,16 @@
-import { ActivityIcon, Loader2 } from "lucide-react";
+import { Users2 } from "lucide-react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useCreateEspecialidade } from "../../hook/useEspecialidade";
 
-export function BtnCadastrarEspecialidade() {
+export function BtnCadastrarLider() {
   const [open, setOpen] = useState<boolean>(false);
   const [nome, setNome] = useState<string>("");
-
-  const [espera, setEspera] = useState<boolean>(false);
-
-  const { criar, error } = useCreateEspecialidade();
-
-  const criarEspecialidadeFunc = async () => {
-    setEspera(true);
-    if (!nome) {
-      alert("Insira o nome da Especialidade");
-    }
-
-    const res = await criar({
-      nome,
-    });
-
-    if (res?.id) {
-      setOpen(false);
-      setEspera(false);
-      setNome("");
-    } else {
-      alert(error);
-      setOpen(false);
-      setEspera(false);
-      setNome("");
-    }
-  };
+  const [senha, setSenha] = useState<string>("");
   return (
     <>
       <BtnCadastrar onClick={() => setOpen(true)}>
-        <ActivityIcon size={40} />
-        <p>Especialidade</p>
+        <Users2 size={40} />
+        <p>Lider</p>
       </BtnCadastrar>
       <div
         style={{
@@ -74,7 +48,7 @@ export function BtnCadastrarEspecialidade() {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <p>Cadastro de Novas Especialidades</p>
+          <p>Cadastro de Novos usuários</p>
           <TextoEntrada
             placeholder="Insira aqui o nome"
             type="text"
@@ -82,9 +56,14 @@ export function BtnCadastrarEspecialidade() {
             value={nome}
             onChange={(e) => setNome(e.target.value)}
           />
-          <button disabled={espera} onClick={() => criarEspecialidadeFunc()}>
-            {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
-          </button>
+          <TextoEntrada
+            placeholder="Insira aqui a senha"
+            type="text"
+            largura="100%"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+          />
+          <button>Salvar</button>
         </div>
       </div>
     </>
@@ -149,10 +128,9 @@ const BtnCadastrar = styled.div`
   transition: all ease-in-out 0.2s;
 
   &:hover {
-    scale: 1.03;
-    border-radius: 22px;
-    background-color: #bbddf9;
-    box-shadow: 2px 2px 5px #00504410;
+    height: 152px;
+    background-color: #f2f9ff;
+    box-shadow: 4px 4px 5px #00004430;
   }
 
   &:active {

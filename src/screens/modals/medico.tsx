@@ -1,11 +1,38 @@
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Loader2 } from "lucide-react";
 import { useState } from "react";
 import styled from "styled-components";
+import { useCriarMedico } from "../../hook/useMedico";
 
 export function BtnCadastrarMedico() {
   const [open, setOpen] = useState<boolean>(false);
   const [nome, setNome] = useState<string>("");
   const [crm, setCrm] = useState<string>("");
+
+  const [espera, setEspera] = useState<boolean>(false);
+
+  const { criar, error } = useCriarMedico();
+
+  const criarMedicoFunc = async () => {
+    setEspera(true);
+    if (!nome || !crm) {
+      alert("Preencha todos os campos!");
+    }
+
+    const res = await criar({
+      nome,
+      crm,
+    });
+
+    if (res?.id) {
+      setOpen(false);
+      setEspera(false);
+      setNome("");
+      setCrm("");
+    } else {
+      alert(error);
+      setEspera(false);
+    }
+  };
 
   return (
     <>
@@ -49,7 +76,7 @@ export function BtnCadastrarMedico() {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <p>Cadastro de Novos usuários</p>
+          <p>Cadastro de Novos Médicos</p>
           <TextoEntrada
             placeholder="Insira aqui o nome"
             type="text"
@@ -64,7 +91,9 @@ export function BtnCadastrarMedico() {
             value={crm}
             onChange={(e) => setCrm(e.target.value)}
           />
-          <button>Salvar</button>
+          <button disabled={espera} onClick={() => criarMedicoFunc()}>
+            {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
+          </button>
         </div>
       </div>
     </>
@@ -129,9 +158,10 @@ const BtnCadastrar = styled.div`
   transition: all ease-in-out 0.2s;
 
   &:hover {
-    height: 152px;
-    background-color: #f2f9ff;
-    box-shadow: 4px 4px 5px #00004430;
+    scale: 1.03;
+    border-radius: 22px;
+    background-color: #bbddf9;
+    box-shadow: 2px 2px 5px #00504410;
   }
 
   &:active {

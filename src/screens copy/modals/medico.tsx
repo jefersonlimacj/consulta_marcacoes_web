@@ -1,42 +1,39 @@
-import { ActivityIcon, Loader2 } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useCreateEspecialidade } from "../../hook/useEspecialidade";
+import { useCriarMedico } from "../../hook/useMedico";
 
-export function BtnCadastrarEspecialidade() {
+export function BtnCadastrarMedico() {
   const [open, setOpen] = useState<boolean>(false);
   const [nome, setNome] = useState<string>("");
+  const [crm, setCrm] = useState<string>("");
 
-  const [espera, setEspera] = useState<boolean>(false);
+  const { criar, error } = useCriarMedico();
 
-  const { criar, error } = useCreateEspecialidade();
-
-  const criarEspecialidadeFunc = async () => {
-    setEspera(true);
-    if (!nome) {
-      alert("Insira o nome da Especialidade");
+  const criarMedidoFunc = async () => {
+    if (!nome || !crm) {
+      alert("Preencha todos os campos!");
     }
 
     const res = await criar({
       nome,
+      crm,
     });
 
     if (res?.id) {
       setOpen(false);
-      setEspera(false);
       setNome("");
+      setCrm("");
     } else {
       alert(error);
-      setOpen(false);
-      setEspera(false);
-      setNome("");
     }
   };
+
   return (
     <>
       <BtnCadastrar onClick={() => setOpen(true)}>
-        <ActivityIcon size={40} />
-        <p>Especialidade</p>
+        <GraduationCap size={40} />
+        <p>Médico</p>
       </BtnCadastrar>
       <div
         style={{
@@ -74,7 +71,7 @@ export function BtnCadastrarEspecialidade() {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <p>Cadastro de Novas Especialidades</p>
+          <p>Cadastro de Novos usuários</p>
           <TextoEntrada
             placeholder="Insira aqui o nome"
             type="text"
@@ -82,9 +79,14 @@ export function BtnCadastrarEspecialidade() {
             value={nome}
             onChange={(e) => setNome(e.target.value)}
           />
-          <button disabled={espera} onClick={() => criarEspecialidadeFunc()}>
-            {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
-          </button>
+          <TextoEntrada
+            placeholder="Insira aqui a CRM"
+            type="text"
+            largura="100%"
+            value={crm}
+            onChange={(e) => setCrm(e.target.value)}
+          />
+          <button onClick={() => criarMedidoFunc()}>Salvar</button>
         </div>
       </div>
     </>
@@ -149,10 +151,9 @@ const BtnCadastrar = styled.div`
   transition: all ease-in-out 0.2s;
 
   &:hover {
-    scale: 1.03;
-    border-radius: 22px;
-    background-color: #bbddf9;
-    box-shadow: 2px 2px 5px #00504410;
+    height: 152px;
+    background-color: #f2f9ff;
+    box-shadow: 4px 4px 5px #00004430;
   }
 
   &:active {

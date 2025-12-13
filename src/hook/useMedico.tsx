@@ -21,11 +21,11 @@ interface MedicosData {
   medicos: Medico[];
 }
 
-export function useMedico() {
+export function useMedicos() {
   const { data, loading, error, refetch } = useQuery<MedicosData>(GET_MEDICOS);
 
   return {
-    listaMedicos: data?.medicos,
+    medicos: data?.medicos,
     loading,
     error,
     refetch,

@@ -1,11 +1,41 @@
-import { Users2 } from "lucide-react";
+import { Loader2, Users2 } from "lucide-react";
 import { useState } from "react";
 import styled from "styled-components";
+import { useCreateLider, useLideres } from "../../hook/useLider";
 
 export function BtnCadastrarLider() {
   const [open, setOpen] = useState<boolean>(false);
   const [nome, setNome] = useState<string>("");
-  const [senha, setSenha] = useState<string>("");
+  const [telefone, setTelefone] = useState<string>("");
+
+  const [espera, setEspera] = useState<boolean>(false);
+
+  const { criar, error } = useCreateLider();
+
+  const criarLiderFunc = async () => {
+    setEspera(true);
+    if (!nome || !telefone) {
+      alert("Preencha todos os campos!");
+    }
+
+    const res = await criar({
+      nome,
+      telefone,
+    });
+
+    if (res?.id) {
+      setOpen(false);
+      setEspera(false);
+      setNome("");
+      setTelefone("");
+    } else {
+      alert(error);
+      setOpen(false);
+      setEspera(false);
+      setNome("");
+      setTelefone("");
+    }
+  };
   return (
     <>
       <BtnCadastrar onClick={() => setOpen(true)}>
@@ -48,7 +78,7 @@ export function BtnCadastrarLider() {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <p>Cadastro de Novos usuários</p>
+          <p>Cadastro de Novos Lideres</p>
           <TextoEntrada
             placeholder="Insira aqui o nome"
             type="text"
@@ -57,13 +87,15 @@ export function BtnCadastrarLider() {
             onChange={(e) => setNome(e.target.value)}
           />
           <TextoEntrada
-            placeholder="Insira aqui a senha"
+            placeholder="Insira aqui o contato"
             type="text"
             largura="100%"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)}
           />
-          <button>Salvar</button>
+          <button disabled={espera} onClick={() => criarLiderFunc()}>
+            {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
+          </button>
         </div>
       </div>
     </>
@@ -128,9 +160,10 @@ const BtnCadastrar = styled.div`
   transition: all ease-in-out 0.2s;
 
   &:hover {
-    height: 152px;
-    background-color: #f2f9ff;
-    box-shadow: 4px 4px 5px #00004430;
+    scale: 1.03;
+    border-radius: 22px;
+    background-color: #bbddf9;
+    box-shadow: 2px 2px 5px #00504410;
   }
 
   &:active {

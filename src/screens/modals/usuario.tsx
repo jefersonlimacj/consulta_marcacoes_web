@@ -29,6 +29,10 @@ export function BtnCadastrarUsuario() {
       setSenha("");
     } else {
       alert(error);
+      setEspera(false);
+      setOpen(false);
+      setNome("");
+      setSenha("");
     }
   };
 
@@ -93,7 +97,7 @@ export function BtnCadastrarUsuario() {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
           />
-          <button onClick={() => criarFunc()}>
+          <button disabled={espera} onClick={() => criarFunc()}>
             {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
           </button>
         </div>
@@ -160,9 +164,10 @@ const BtnCadastrar = styled.div`
   transition: all ease-in-out 0.2s;
 
   &:hover {
-    height: 152px;
-    background-color: #f2f9ff;
-    box-shadow: 4px 4px 5px #00004430;
+    scale: 1.03;
+    border-radius: 22px;
+    background-color: #bbddf9;
+    box-shadow: 2px 2px 5px #00504410;
   }
 
   &:active {

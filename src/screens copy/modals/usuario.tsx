@@ -1,42 +1,42 @@
-import { ActivityIcon, Loader2 } from "lucide-react";
+import { Loader2, ShieldUser } from "lucide-react";
 import { useState } from "react";
 import styled from "styled-components";
-import { useCreateEspecialidade } from "../../hook/useEspecialidade";
+import { useCreateUser } from "../../hook/useAdmin";
 
-export function BtnCadastrarEspecialidade() {
+export function BtnCadastrarUsuario() {
   const [open, setOpen] = useState<boolean>(false);
   const [nome, setNome] = useState<string>("");
+  const [senha, setSenha] = useState<string>("");
 
   const [espera, setEspera] = useState<boolean>(false);
 
-  const { criar, error } = useCreateEspecialidade();
+  const { criar, error } = useCreateUser();
 
-  const criarEspecialidadeFunc = async () => {
-    setEspera(true);
-    if (!nome) {
-      alert("Insira o nome da Especialidade");
+  const criarFunc = async () => {
+    if (!nome || !senha) {
+      alert("Preenchar os Campos corretamente");
     }
-
+    setEspera(true);
     const res = await criar({
-      nome,
+      username: nome,
+      password: senha,
     });
-
     if (res?.id) {
-      setOpen(false);
+      //setCarregamento
       setEspera(false);
+      setOpen(false);
       setNome("");
+      setSenha("");
     } else {
       alert(error);
-      setOpen(false);
-      setEspera(false);
-      setNome("");
     }
   };
+
   return (
     <>
       <BtnCadastrar onClick={() => setOpen(true)}>
-        <ActivityIcon size={40} />
-        <p>Especialidade</p>
+        <ShieldUser size={40} />
+        <p>Administrador</p>
       </BtnCadastrar>
       <div
         style={{
@@ -55,7 +55,11 @@ export function BtnCadastrarEspecialidade() {
           alignItems: "center",
           transition: "all ease-in-out 0.3s",
         }}
-        onClick={() => setOpen(false)}
+        onClick={() => {
+          setOpen(false);
+          setNome("");
+          setSenha("");
+        }}
       >
         <div
           style={{
@@ -74,7 +78,7 @@ export function BtnCadastrarEspecialidade() {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <p>Cadastro de Novas Especialidades</p>
+          <p>Cadastro de Novos usuários</p>
           <TextoEntrada
             placeholder="Insira aqui o nome"
             type="text"
@@ -82,7 +86,14 @@ export function BtnCadastrarEspecialidade() {
             value={nome}
             onChange={(e) => setNome(e.target.value)}
           />
-          <button disabled={espera} onClick={() => criarEspecialidadeFunc()}>
+          <TextoEntrada
+            placeholder="Insira aqui a senha"
+            type="text"
+            largura="100%"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+          />
+          <button onClick={() => criarFunc()}>
             {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
           </button>
         </div>
@@ -149,10 +160,9 @@ const BtnCadastrar = styled.div`
   transition: all ease-in-out 0.2s;
 
   &:hover {
-    scale: 1.03;
-    border-radius: 22px;
-    background-color: #bbddf9;
-    box-shadow: 2px 2px 5px #00504410;
+    height: 152px;
+    background-color: #f2f9ff;
+    box-shadow: 4px 4px 5px #00004430;
   }
 
   &:active {

@@ -374,8 +374,8 @@ function ModalMarcacao({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <p>{marcacao.paciente.nome}</p>
-        <p>{marcacao.especialidade.nome}</p>
+        <p>{marcacao?.paciente?.nome || "Aguarde..."}</p>
+        <p>{marcacao?.especialidade?.nome || "Aguarde..."}</p>
       </div>
     </div>
   );

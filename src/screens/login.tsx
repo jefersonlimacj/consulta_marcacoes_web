@@ -80,7 +80,6 @@ function Login() {
         <div className="mx-auto flex flex-col max-w-3xl items-center gap-x-4 rounded-xl bg-white p-6 shadow-lg outline outline-black/5 dark:bg-slate-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10 gap-5">
           <p>Login </p>
           <EntradaNome nome={nome} setNome={setNome} />
-
           <EntradaSenha senha={senha} setSenha={setSenha} />
           <div
             style={{

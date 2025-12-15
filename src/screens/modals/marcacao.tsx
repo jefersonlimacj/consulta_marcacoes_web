@@ -27,7 +27,7 @@ export function BtnNovaMarcacao() {
   const [retorno, setRetorno] = useState<boolean>(false);
 
   const { pacientes, refetch: atualizarPacientes } = usePacientes();
-  console.log(pacientes)
+  console.log(pacientes);
   const { especialidades } = useEspecialidades();
   const { lideres } = useLideres();
   const { medicos } = useMedicos();
@@ -167,16 +167,33 @@ export function BtnNovaMarcacao() {
                 backgroundColor: "#DDD",
                 borderRadius: 14,
                 display: "flex",
-                flexDirection: "column",
+                flexDirection: "row",
                 padding: "0px 10px",
-                alignItems: "flex-start",
-                justifyContent: "center",
+                alignItems: "center",
+                justifyContent: "space-between",
               }}
             >
-              <p style={{ fontSize: 12 }}>Paciente</p>
-              <p style={{ fontSize: 18, fontWeight: 600 }}>
-                {pacienteSelecionado?.nome || "Selecione o Paciente..."}
-              </p>
+              <div
+                style={{
+                  width: "100%",
+                  height: 60,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                }}
+              >
+                <p style={{ fontSize: 12 }}>Paciente</p>
+                <p style={{ fontSize: 18, fontWeight: 600 }}>
+                  {pacienteSelecionado?.nome || "Selecione o Paciente..."}
+                </p>
+              </div>
+              <ModalPacientes
+                listaPacientes={pacientes}
+                paciente={pacienteId}
+                setPaciente={setPacienteId}
+                refetch={atualizarPacientes}
+              />
             </div>
             <div
               style={{
@@ -193,16 +210,39 @@ export function BtnNovaMarcacao() {
                   backgroundColor: "#DDD",
                   borderRadius: 14,
                   display: "flex",
-                  flexDirection: "column",
+                  flexDirection: "row",
                   padding: "0px 10px",
-                  alignItems: "flex-start",
-                  justifyContent: "center",
+                  alignItems: "center",
+                  justifyContent: "space-between",
                 }}
               >
-                <p style={{ fontSize: 12 }}>Especialidade</p>
-                <p style={{ fontSize: 18, fontWeight: 600 }}>
-                  {especialidadeSelecionada?.nome || "..."}
-                </p>
+                <div
+                  style={{
+                    width: "40%",
+                    height: 60,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p style={{ fontSize: 12 }}>Especialidade</p>
+                  <p
+                    style={{
+                      fontSize: 18,
+                      fontWeight: 600,
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {especialidadeSelecionada?.nome || "..."}
+                  </p>
+                </div>
+                <ModalEspecialidades
+                  especialidade={especialidadeId}
+                  listaEspecialidades={especialidades}
+                  setEspecialidade={setEspecialidadeId}
+                />
               </div>
               <div
                 style={{
@@ -228,21 +268,40 @@ export function BtnNovaMarcacao() {
               </div>
               <div
                 style={{
-                  width: "30%",
+                  width: "40%",
                   height: 60,
                   backgroundColor: "#DDD",
                   borderRadius: 14,
                   display: "flex",
-                  flexDirection: "column",
+                  flexDirection: "row",
                   padding: "0px 10px",
-                  alignItems: "flex-start",
-                  justifyContent: "center",
+                  alignItems: "center",
+                  justifyContent: "space-between",
                 }}
               >
-                <p style={{ fontSize: 12 }}>Liderança</p>
-                <p style={{ fontSize: 18, fontWeight: 600 }}>
-                  {liderSelecionado?.nome || "..."}
-                </p>
+                <div
+                  style={{
+                    width: "30%",
+                    height: 60,
+                    backgroundColor: "#DDD",
+                    borderRadius: 14,
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: "0px 10px",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p style={{ fontSize: 12 }}>Liderança</p>
+                  <p style={{ fontSize: 18, fontWeight: 600 }}>
+                    {liderSelecionado?.nome || "..."}
+                  </p>
+                </div>
+                <ModalLideres
+                  lider={liderId}
+                  listaLideres={lideres}
+                  setLider={setLiderId}
+                />
               </div>
             </div>
             <div
@@ -266,7 +325,6 @@ export function BtnNovaMarcacao() {
                 value={tipoExame}
               />
             </div>
-
             <div
               style={{
                 display: "flex",
@@ -277,7 +335,7 @@ export function BtnNovaMarcacao() {
             >
               <div
                 style={{
-                  width: "25%",
+                  width: "30%",
                   height: 60,
                   backgroundColor: "#DDD",
                   borderRadius: 14,
@@ -334,21 +392,47 @@ export function BtnNovaMarcacao() {
               {retorno && (
                 <div
                   style={{
-                    width: "50%",
+                    width: "45%",
                     height: 60,
                     backgroundColor: "#DDD",
                     borderRadius: 14,
                     display: "flex",
-                    flexDirection: "column",
+                    flexDirection: "row",
                     padding: "0px 10px",
-                    alignItems: "flex-start",
-                    justifyContent: "center",
+                    alignItems: "center",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <p style={{ fontSize: 12 }}>Médico</p>
-                  <p style={{ fontSize: 18, fontWeight: 600 }}>
-                    {medicoSelecionado?.nome || "..."}
-                  </p>
+                  <div
+                    style={{
+                      width: "50%",
+                      height: 60,
+                      display: "flex",
+                      flexDirection: "column",
+                      padding: "0px 10px",
+                      alignItems: "flex-start",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <p style={{ fontSize: 12 }}>Médico</p>
+                    <p
+                      style={{
+                        fontSize: 18,
+                        fontWeight: 600,
+                        width:"100%",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        overflow: "hiddens",
+                      }}
+                    >
+                      {medicoSelecionado?.nome || "..."}
+                    </p>
+                  </div>
+                  <ModalMedicos
+                    medico={medicoId}
+                    setMedico={setMedicoId}
+                    listaMedicos={medicos}
+                  />
                 </div>
               )}
             </div>
@@ -358,44 +442,11 @@ export function BtnNovaMarcacao() {
               style={{
                 backgroundColor: "#fff",
                 borderRadius: 14,
-                height: 100,
+                height: 150,
                 padding: 10,
                 outline: "none",
               }}
             />
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "100%",
-                alignItems: "center",
-                gap: 15,
-              }}
-            >
-              <ModalPacientes
-                paciente={pacienteId}
-                setPaciente={setPacienteId}
-                listaPacientes={pacientes}
-                refetch={() => atualizarPacientes()}
-              />
-              <ModalEspecialidades
-                especialidade={especialidadeId}
-                setEspecialidade={setEspecialidadeId}
-                listaEspecialidades={especialidades}
-              />
-              <ModalLideres
-                lider={liderId}
-                setLider={setLiderId}
-                listaLideres={lideres}
-              />
-              {retorno && (
-                <ModalMedicos
-                  medico={medicoId}
-                  setMedico={setMedicoId}
-                  listaMedicos={medicos}
-                />
-              )}
-            </div>
           </div>
           <button
             style={{
@@ -466,7 +517,6 @@ function ModalPacientes({
         }}
       >
         {open ? <CircleX color={"red"} /> : <CirclePlus />}
-        <p>Paciente</p>
       </BtnAdd>
       <div
         style={{
@@ -630,7 +680,6 @@ function ModalEspecialidades({
         }}
       >
         {open ? <CircleX color={"red"} /> : <CirclePlus />}
-        <p>Especialidades</p>
       </BtnAdd>
       <div
         style={{
@@ -750,7 +799,6 @@ function ModalLideres({
         }}
       >
         {open ? <CircleX color={"red"} /> : <CirclePlus />}
-        <p>Lider</p>
       </BtnAdd>
       <div
         style={{
@@ -871,7 +919,6 @@ function ModalMedicos({
         }}
       >
         {open ? <CircleX color={"red"} /> : <CirclePlus />}
-        <p>Médico</p>
       </BtnAdd>
       <div
         style={{
@@ -1046,7 +1093,7 @@ const BtnRefresh = styled.div`
     box-shadow: 2px 2px 2px #55555520;
   }
 
-  &:active{
+  &:active {
     scale: 1.02;
   }
 `;

@@ -19,6 +19,8 @@ function HomeConteudo() {
   const { usuarios } = useUsers();
 
   const [loadingId, setLoadingId] = useState<string>("");
+  const [cxModal, setCxModal] = useState<boolean>(false);
+  const [marcacaoSelecionada, setMarcacaoSelecionada] = useState<any>({});
 
   const [fPaciente, setfPaciente] = useState<string>("");
   const [fEspecialidade, setfEspecialidade] = useState<string>("");
@@ -26,9 +28,6 @@ function HomeConteudo() {
   const listaMarcacoes = marcacoes.filter((e) => e.status === "AGUARDANDO");
 
   const { editar, error } = useEditMarcacao();
-
-  console.log(marcacoes);
-  console.log(usuarios);
 
   const editarMarcacao = async (idLinha: string) => {
     setLoadingId(idLinha);
@@ -70,12 +69,12 @@ function HomeConteudo() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        gap: 5,
       }}
     >
       <div
         style={{
           width: "90%",
-          height: "5%",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -89,7 +88,6 @@ function HomeConteudo() {
       <div
         style={{
           width: "90%",
-          height: "10%",
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
@@ -132,8 +130,8 @@ function HomeConteudo() {
           height: "42px",
           display: "flex",
           flexDirection: "row",
-          justifyContent:"space-between",
-          alignItems:"center",
+          justifyContent: "space-between",
+          alignItems: "center",
           backgroundColor: "#0099BB",
           marginBottom: 10,
           borderRadius: 5,
@@ -192,7 +190,7 @@ function HomeConteudo() {
         >
           Data Nasc.
         </div>
-         <div
+        <div
           style={{
             width: "10%",
             color: "#f0f0f0",
@@ -218,7 +216,7 @@ function HomeConteudo() {
         >
           Tipo
         </div>
-       <div
+        <div
           style={{
             width: "10%",
             color: "#f0f0f0",
@@ -242,14 +240,15 @@ function HomeConteudo() {
           }}
         >
           Ações
-        </div> 
+        </div>
       </div>
       <div
         style={{
           width: "100%",
-          height: "75%",
+          height: "auto",
           overflowY: "auto",
           scrollbarWidth: "none",
+          paddingBottom: 10,
         }}
       >
         {(
@@ -270,10 +269,17 @@ function HomeConteudo() {
               marcacao={marcacao}
               editarMarcacao={editarMarcacao}
               cancelarMarcacao={cancelarMarcacao}
+              setMarcacaoSelecionada={setMarcacaoSelecionada}
+              setOpen={() => setCxModal(true)}
             />
           );
         })}
       </div>
+      <ModalMarcacao
+        open={cxModal}
+        setOpen={setCxModal}
+        marcacao={marcacaoSelecionada}
+      />
     </div>
   );
 }
@@ -316,6 +322,61 @@ function TextoEntrada({
           width: "100%",
         }}
       />
+    </div>
+  );
+}
+
+function ModalMarcacao({
+  open,
+  setOpen,
+  marcacao,
+}: {
+  open: boolean;
+  setOpen: any;
+  marcacao: any;
+}) {
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        top: 0,
+        left: 0,
+        opacity: open ? 1 : 0,
+        position: "absolute",
+        backgroundColor: "#F4F4F490",
+        backdropFilter: "blur(2px)",
+        pointerEvents: open ? "auto" : "none",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        transition: "all ease-in-out 0.3s",
+      }}
+      onClick={() => {
+        setOpen(false);
+      }}
+    >
+      <div
+        style={{
+          width: "30%",
+          scale: open ? 1 : 0.5,
+          backgroundColor: "#F4F4F4",
+          boxShadow: "5px 5px 10px #55555520",
+          borderRadius: 22,
+          border: "1px solid #DDD",
+          transition: "all ease-in-out 0.3s",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: 10,
+          gap: 15,
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p>{marcacao.paciente.nome}</p>
+        <p>{marcacao.especialidade.nome}</p>
+      </div>
     </div>
   );
 }

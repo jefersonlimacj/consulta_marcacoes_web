@@ -1,4 +1,5 @@
 import { CircleCheck, CircleX, LoaderCircle } from "lucide-react";
+import { useState } from "react";
 import styled from "styled-components";
 
 interface LinhaMarcacaoProps {
@@ -32,10 +33,16 @@ export function LinhaMarcacao({
   editarMarcacao,
   cancelarMarcacao,
   loadingId,
+  setOpen,
+  setMarcacaoSelecionada,
 }: any) {
   return (
     <>
       <LinhaMarcacaoStyled
+        onClick={() => {
+          setOpen(true);
+          setMarcacaoSelecionada(marcacao);
+        }}
         $borderLeft={
           marcacao.status === "AGUARDANDO"
             ? "#0099ff"
@@ -195,7 +202,7 @@ export function LinhaMarcacao({
           </p>
         </div>
 
-           <div
+        <div
           style={{
             width: "10%",
             height: 30,
@@ -294,7 +301,7 @@ function BtnActions({
     >
       <BtnEsqConfirm onClick={editar}>
         {loadingId === idMarcacao ? (
-          <LoaderCircle className="animate-spin" color="#0dac4b" />
+          <LoaderCircle size={18} className="animate-spin" color="#0dac4b" />
         ) : (
           <CircleCheck size={18} color="#0dac4b" />
         )}
@@ -302,7 +309,7 @@ function BtnActions({
 
       <BtnDirRemove onClick={remover}>
         {loadingId === idMarcacao ? (
-          <LoaderCircle className="animate-spin" color="#f84e3c" />
+          <LoaderCircle size={18} className="animate-spin" color="#f84e3c" />
         ) : (
           <CircleX size={18} color="#f84e3c" />
         )}

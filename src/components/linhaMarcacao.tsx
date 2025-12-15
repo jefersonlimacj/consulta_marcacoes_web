@@ -1,4 +1,4 @@
-import { AlarmClock, LoaderCircle } from "lucide-react";
+import { CircleCheck, CircleX, LoaderCircle } from "lucide-react";
 import styled from "styled-components";
 
 interface LinhaMarcacaoProps {
@@ -6,30 +6,33 @@ interface LinhaMarcacaoProps {
 }
 
 const LinhaMarcacaoStyled = styled.div<LinhaMarcacaoProps>`
-  margin-bottom: 5px;
-  background-color: #d9d9d9;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  border-left: 3px solid ${({ $borderLeft }) => $borderLeft};
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  background-color: #d9d9d9;
+  margin-bottom: 5px;
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  border-left: 3px solid ${({ $borderLeft }) => $borderLeft};
   transition: all ease-in-out 0.2s;
   cursor: pointer;
   position: relative;
   overflow: hidden;
 
   &:hover {
-    background-color: #d9d9d9;
-    border: 1px solid ${({ $borderLeft }) => $borderLeft}50;
-    border-left: 5px solid ${({ $borderLeft }) => $borderLeft};
+    background-color: #d1d1d9;
   }
 `;
 
-export function LinhaMarcacao({ marcacao, editarMarcacao, loadingId }: any) {
+export function LinhaMarcacao({
+  marcacao,
+  editarMarcacao,
+  cancelarMarcacao,
+  loadingId,
+}: any) {
   return (
     <>
       <LinhaMarcacaoStyled
@@ -65,7 +68,7 @@ export function LinhaMarcacao({ marcacao, editarMarcacao, loadingId }: any) {
         ) : null}
         <div
           style={{
-            width: "15%",
+            width: "20%",
             height: 30,
             borderRight: "1px solid #999",
             padding: 5,
@@ -75,7 +78,17 @@ export function LinhaMarcacao({ marcacao, editarMarcacao, loadingId }: any) {
             alignItems: "center",
           }}
         >
-          <p>{marcacao.paciente.nome}</p>
+          <p
+            style={{
+              width: "100%",
+              textAlign: "left",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+            }}
+          >
+            {marcacao.paciente.nome}
+          </p>
         </div>
         <div
           style={{
@@ -89,7 +102,17 @@ export function LinhaMarcacao({ marcacao, editarMarcacao, loadingId }: any) {
             alignItems: "center",
           }}
         >
-          <p>{formatarNSus(marcacao.paciente.nSus)}</p>
+          <p
+            style={{
+              width: "100%",
+              textAlign: "center",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+            }}
+          >
+            {formatarNSus(marcacao.paciente.nSus)}
+          </p>
         </div>
 
         <div
@@ -124,7 +147,7 @@ export function LinhaMarcacao({ marcacao, editarMarcacao, loadingId }: any) {
 
         <div
           style={{
-            width: "15%",
+            width: "10%",
             height: 30,
             borderRight: "1px solid #999",
             padding: 5,
@@ -134,7 +157,17 @@ export function LinhaMarcacao({ marcacao, editarMarcacao, loadingId }: any) {
             alignItems: "center",
           }}
         >
-          <p>{marcacao.especialidade.nome}</p>
+          <p
+            style={{
+              width: "100%",
+              textAlign: "center",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+            }}
+          >
+            {marcacao.especialidade.nome}
+          </p>
         </div>
 
         <div
@@ -149,10 +182,20 @@ export function LinhaMarcacao({ marcacao, editarMarcacao, loadingId }: any) {
             alignItems: "center",
           }}
         >
-          <p>{marcacao.tipoExame}</p>
+          <p
+            style={{
+              width: "100%",
+              textAlign: "center",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+            }}
+          >
+            {marcacao.tipoExame}
+          </p>
         </div>
 
-        <div
+           <div
           style={{
             width: "10%",
             height: 30,
@@ -168,33 +211,103 @@ export function LinhaMarcacao({ marcacao, editarMarcacao, loadingId }: any) {
         </div>
         <div
           style={{
-            width: "5%",
-            height: 30,
-            padding: 5,
+            width: "8%",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
           }}
         >
-          <button
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "2px 2px 3px #00000010",
-            }}
-            onClick={() => editarMarcacao(marcacao.id)}
-          >
-            {loadingId === marcacao.id ? (
-              <LoaderCircle className="animate-spin" />
-            ) : (
-              <AlarmClock size={18} />
-            )}
-          </button>
+          <BtnActions
+            editar={() => editarMarcacao(marcacao.id)}
+            remover={() => cancelarMarcacao(marcacao.id)}
+            idMarcacao={marcacao.id}
+            loadingId={loadingId}
+          />
         </div>
       </LinhaMarcacaoStyled>
     </>
+  );
+}
+
+const BtnEsqConfirm = styled.div`
+  width: 50%;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f4f4;
+  transition: all ease-in-out 0.2s;
+  border-radius: 10px 0 0 10px;
+
+  &:hover {
+    background-color: #0dac4b44;
+  }
+
+  &:active {
+    background-color: #0dac4b90;
+  }
+`;
+
+const BtnDirRemove = styled.div`
+  width: 50%;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f4f4;
+  transition: all ease-in-out 0.2s;
+  border-radius: 0 10px 10px 0;
+  border-left: 1px solid #55555550;
+
+  &:hover {
+    background-color: #f84e3c44;
+  }
+  &:active {
+    background-color: #f84e3c90;
+  }
+`;
+
+function BtnActions({
+  editar,
+  remover,
+  idMarcacao,
+  loadingId,
+}: {
+  editar: () => void;
+  remover: () => void;
+  idMarcacao: string;
+  loadingId: string;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: "#F4F4F4",
+        borderRadius: 10,
+        marginRight: 5,
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <BtnEsqConfirm onClick={editar}>
+        {loadingId === idMarcacao ? (
+          <LoaderCircle className="animate-spin" color="#0dac4b" />
+        ) : (
+          <CircleCheck size={18} color="#0dac4b" />
+        )}
+      </BtnEsqConfirm>
+
+      <BtnDirRemove onClick={remover}>
+        {loadingId === idMarcacao ? (
+          <LoaderCircle className="animate-spin" color="#f84e3c" />
+        ) : (
+          <CircleX size={18} color="#f84e3c" />
+        )}
+      </BtnDirRemove>
+    </div>
   );
 }
 

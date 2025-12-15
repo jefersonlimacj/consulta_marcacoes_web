@@ -82,7 +82,20 @@ export function BtnCadastrarEspecialidade() {
             value={nome}
             onChange={(e) => setNome(e.target.value)}
           />
-          <button disabled={espera} onClick={() => criarEspecialidadeFunc()}>
+          <button
+            style={{
+              width: "50%",
+              padding: 5,
+              backgroundColor: "#0090ff90",
+              borderRadius: 14,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+            disabled={espera}
+            onClick={() => criarEspecialidadeFunc()}
+          >
             {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
           </button>
         </div>

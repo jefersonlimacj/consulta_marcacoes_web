@@ -97,7 +97,20 @@ export function BtnCadastrarUsuario() {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
           />
-          <button disabled={espera} onClick={() => criarFunc()}>
+          <button
+            style={{
+              width: "50%",
+              padding: 5,
+              backgroundColor: "#0090ff90",
+              borderRadius: 14,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+            disabled={espera}
+            onClick={() => criarFunc()}
+          >
             {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
           </button>
         </div>

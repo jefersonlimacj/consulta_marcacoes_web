@@ -45,6 +45,21 @@ function HomeConteudo() {
       alert(error);
     }
   };
+  const cancelarMarcacao = async (idLinha: string) => {
+    setLoadingId(idLinha);
+    const novoStatus = "CANCELADO";
+
+    const res = await editar(idLinha, {
+      status: novoStatus,
+    });
+
+    if (res?.id) {
+      setLoadingId("0");
+      await refetch();
+    } else {
+      alert(error);
+    }
+  };
 
   return (
     <div
@@ -95,22 +110,39 @@ function HomeConteudo() {
           type="text"
           value={fEspecialidade}
         />
-        <button onClick={() => refetch()}>Recarregar</button>
+        <div
+          style={{
+            width: "10%",
+            padding: 5,
+            backgroundColor: "#0090ff90",
+            borderRadius: 14,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
+          }}
+          onClick={() => refetch()}
+        >
+          Recarregar
+        </div>
       </div>
       <div
         style={{
-          height: "5%",
           width: "100%",
-          backgroundColor: "#0099BB",
+          height: "42px",
           display: "flex",
           flexDirection: "row",
+          justifyContent:"space-between",
+          alignItems:"center",
+          backgroundColor: "#0099BB",
           marginBottom: 10,
           borderRadius: 5,
+          borderLeft: "3px solid #0099BB",
         }}
       >
         <div
           style={{
-            width: "15%",
+            width: "20%",
             color: "#f0f0f0",
             borderRight: "1px solid #DDD",
             display: "flex",
@@ -126,7 +158,6 @@ function HomeConteudo() {
             width: "15%",
             color: "#f0f0f0",
             borderRight: "1px solid #DDD",
-            padding: 5,
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
@@ -140,7 +171,6 @@ function HomeConteudo() {
             width: "10%",
             color: "#f0f0f0",
             borderRight: "1px solid #DDD",
-            padding: 5,
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
@@ -154,7 +184,6 @@ function HomeConteudo() {
             width: "10%",
             color: "#f0f0f0",
             borderRight: "1px solid #DDD",
-            padding: 5,
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
@@ -163,12 +192,11 @@ function HomeConteudo() {
         >
           Data Nasc.
         </div>
-        <div
+         <div
           style={{
-            width: "15%",
+            width: "10%",
             color: "#f0f0f0",
             borderRight: "1px solid #DDD",
-            padding: 5,
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
@@ -182,7 +210,6 @@ function HomeConteudo() {
             width: "15%",
             color: "#f0f0f0",
             borderRight: "1px solid #DDD",
-            padding: 5,
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
@@ -191,12 +218,11 @@ function HomeConteudo() {
         >
           Tipo
         </div>
-        <div
+       <div
           style={{
             width: "10%",
             color: "#f0f0f0",
             borderRight: "1px solid #DDD",
-            padding: 5,
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
@@ -205,12 +231,23 @@ function HomeConteudo() {
         >
           Telefone
         </div>
-        {/* <div style={{ width: "10%" }}>{""}</div> */}
+        <div
+          style={{
+            width: "8%",
+            color: "#f0f0f0",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          Ações
+        </div> 
       </div>
       <div
         style={{
           width: "100%",
-          height: "80%",
+          height: "75%",
           overflowY: "auto",
           scrollbarWidth: "none",
         }}
@@ -232,6 +269,7 @@ function HomeConteudo() {
               loadingId={loadingId}
               marcacao={marcacao}
               editarMarcacao={editarMarcacao}
+              cancelarMarcacao={cancelarMarcacao}
             />
           );
         })}

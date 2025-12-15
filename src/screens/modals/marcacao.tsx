@@ -4,6 +4,7 @@ import {
   CirclePlus,
   CircleX,
   Loader2,
+  RefreshCcw,
 } from "lucide-react";
 import { useState } from "react";
 import styled from "styled-components";
@@ -25,7 +26,8 @@ export function BtnNovaMarcacao() {
   const [observacoes, setObservacoes] = useState<string>("");
   const [retorno, setRetorno] = useState<boolean>(false);
 
-  const { pacientes } = usePacientes();
+  const { pacientes, refetch: atualizarPacientes } = usePacientes();
+  console.log(pacientes)
   const { especialidades } = useEspecialidades();
   const { lideres } = useLideres();
   const { medicos } = useMedicos();
@@ -374,6 +376,7 @@ export function BtnNovaMarcacao() {
                 paciente={pacienteId}
                 setPaciente={setPacienteId}
                 listaPacientes={pacientes}
+                refetch={() => atualizarPacientes()}
               />
               <ModalEspecialidades
                 especialidade={especialidadeId}
@@ -394,7 +397,20 @@ export function BtnNovaMarcacao() {
               )}
             </div>
           </div>
-          <button disabled={espera} onClick={() => criarMarcacaoFunc()}>
+          <button
+            style={{
+              width: "50%",
+              padding: 5,
+              backgroundColor: "#0090ff90",
+              borderRadius: 14,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+            disabled={espera}
+            onClick={() => criarMarcacaoFunc()}
+          >
             {espera ? (
               <Loader2 className="animate-spin" />
             ) : (
@@ -430,10 +446,12 @@ function ModalPacientes({
   paciente,
   setPaciente,
   listaPacientes,
+  refetch,
 }: {
   paciente: any;
   setPaciente: any;
   listaPacientes: any;
+  refetch: () => void;
 }) {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -471,13 +489,27 @@ function ModalPacientes({
           inset: open ? 10 : 50,
         }}
       >
-        <TextoEntrada
-          largura="100%"
-          type="text"
-          placeholder="Pesquise o paciente"
-          value={nomePaciente}
-          onChange={(e) => setNomePaciente(e.target.value)}
-        />
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <TextoEntrada
+            largura="90%"
+            type="text"
+            placeholder="Pesquise o paciente"
+            value={nomePaciente}
+            onChange={(e) => setNomePaciente(e.target.value)}
+          />
+          <BtnRefresh onClick={refetch}>
+            <RefreshCcw />
+          </BtnRefresh>
+        </div>
+
         <div
           style={{
             width: "100%",
@@ -515,6 +547,7 @@ function ModalPacientes({
                     justifyContent: "space-between",
                     alignItems: "center",
                     cursor: "pointer",
+                    fontSize: 14,
                   }}
                   onClick={() => {
                     setPaciente(pac.id);
@@ -522,9 +555,36 @@ function ModalPacientes({
                   }}
                   key={pac.id}
                 >
-                  <p>{pac?.nome}</p>
-                  <p>{formatarData(pac?.dataNascimento)}</p>
-                  <p>{formatarCPF(pac?.cpf)}</p>
+                  <p
+                    style={{
+                      whiteSpace: "nowrap",
+                      width: "40%",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {pac?.nome}
+                  </p>
+                  <p
+                    style={{
+                      whiteSpace: "nowrap",
+                      width: "18%",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {formatarData(pac?.dataNascimento)}
+                  </p>
+                  <p
+                    style={{
+                      whiteSpace: "nowrap",
+                      width: "25%",
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {formatarCPF(pac?.cpf)}
+                  </p>
                   <div
                     style={{
                       width: 30,
@@ -970,8 +1030,29 @@ function TextoEntrada({
   );
 }
 
+const BtnRefresh = styled.div`
+  width: 35px;
+  height: 35px;
+  border-radius: 50px;
+  background-color: #d4d4d4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all ease-in-out 0.2s;
+
+  &:hover {
+    background-color: #b4b4b4;
+    box-shadow: 2px 2px 2px #55555520;
+  }
+
+  &:active{
+    scale: 1.02;
+  }
+`;
+
 const BtnCadastrar = styled.div`
-  width: 350px;
+  width: 300px;
   height: 150px;
   background-color: #f8f8f8;
   border-radius: 14px;

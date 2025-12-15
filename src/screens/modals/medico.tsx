@@ -91,7 +91,16 @@ export function BtnCadastrarMedico() {
             value={crm}
             onChange={(e) => setCrm(e.target.value)}
           />
-          <button disabled={espera} onClick={() => criarMedicoFunc()}>
+          <button  style={{
+              width: "50%",
+              padding: 5,
+              backgroundColor: "#0090ff90",
+              borderRadius: 14,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }} disabled={espera} onClick={() => criarMedicoFunc()}>
             {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
           </button>
         </div>

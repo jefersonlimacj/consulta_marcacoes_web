@@ -25,8 +25,8 @@ function Login() {
 
     if (retorno?.id) {
       console.log("Usuário logado com ID:", retorno.id);
-      localStorage.setItem("id", retorno?.id)
-      localStorage.setItem("user", retorno?.username)
+      localStorage.setItem("id", retorno?.id);
+      localStorage.setItem("user", retorno?.username);
       navigate("/home");
     } else {
       setMsgErro(`${error?.message}`);
@@ -82,7 +82,21 @@ function Login() {
           <EntradaNome nome={nome} setNome={setNome} />
 
           <EntradaSenha senha={senha} setSenha={setSenha} />
-          <button onClick={(e) => fazerLogin(e)}>Entrar</button>
+          <div
+            style={{
+              width: "50%",
+              padding: 5,
+              backgroundColor: "#0090ff90",
+              borderRadius: 14,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+            onClick={(e) => fazerLogin(e)}
+          >
+            Entrar
+          </div>
 
           <p className="text-sm text-red-600">{msgErro}</p>
         </div>
@@ -126,7 +140,7 @@ function EntradaSenha({ senha, setSenha }: { senha?: string; setSenha?: any }) {
       }}
     >
       <input
-        type="text"
+        type="password"
         className="text-black dark:text-black"
         style={{ width: "100%", outline: "none" }}
         value={senha}

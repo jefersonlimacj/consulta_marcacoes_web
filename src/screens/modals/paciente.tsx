@@ -14,6 +14,22 @@ export function BtnCadastrarPaciente() {
 
   const [espera, setEspera] = useState<boolean>(false);
 
+  const [arquivo, setArquivo] = useState<File | null>(null);
+
+  // async function enviar() {
+  //   if (!arquivo) return;
+
+  //   const formData = new FormData();
+  //   formData.append("file", arquivo);
+
+  //   await fetch("http://localhost:3333/importar", {
+  //     method: "POST",
+  //     body: formData,
+  //   });
+
+  //   alert("Importação concluída");
+  // }
+
   const { criar, error } = useCreatePaciente();
 
   const criarPacienteFunc = async () => {
@@ -149,9 +165,30 @@ export function BtnCadastrarPaciente() {
             />
           </div>
 
-          <button disabled={espera} onClick={() => criarPacienteFunc()}>
+          <button
+            style={{
+              width: "50%",
+              padding: 5,
+              backgroundColor: "#0090ff90",
+              borderRadius: 14,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+            disabled={espera}
+            onClick={() => criarPacienteFunc()}
+          >
             {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
           </button>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <input
+              type="file"
+              accept=".csv"
+              onChange={(e) => setArquivo(e.target.files?.[0] ?? null)}
+            />
+            {/* <button onClick={enviar}>Importar</button> */}
+          </div>
         </div>
       </div>
     </>

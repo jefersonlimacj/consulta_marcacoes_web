@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BaseTelas } from "../components/baseTelas";
 import { useEditMarcacao, useMarcacoes } from "../hook/useMarcacoes";
-import { useUsers } from "../hook/useAdmin";
+// import { useUsers } from "../hook/useAdmin";
 import { LinhaMarcacao } from "../components/linhaMarcacao";
 
 function Home() {
@@ -16,7 +16,7 @@ export default Home;
 
 function HomeConteudo() {
   const { marcacoes, refetch } = useMarcacoes();
-  const { usuarios } = useUsers();
+  // const { usuarios } = useUsers();
 
   const [loadingId, setLoadingId] = useState<string>("");
   const [cxModal, setCxModal] = useState<boolean>(false);

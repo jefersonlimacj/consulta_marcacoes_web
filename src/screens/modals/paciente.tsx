@@ -14,7 +14,7 @@ export function BtnCadastrarPaciente() {
 
   const [espera, setEspera] = useState<boolean>(false);
 
-  const [arquivo, setArquivo] = useState<File | null>(null);
+  // const [arquivo, setArquivo] = useState<File | null>(null);
 
   // async function enviar() {
   //   if (!arquivo) return;
@@ -181,14 +181,14 @@ export function BtnCadastrarPaciente() {
           >
             {espera ? <Loader2 className="animate-spin" /> : "Salvar"}
           </button>
-          <div style={{ display: "flex", flexDirection: "row" }}>
+          {/* <div style={{ display: "flex", flexDirection: "row" }}>
             <input
               type="file"
               accept=".csv"
               onChange={(e) => setArquivo(e.target.files?.[0] ?? null)}
             />
-            {/* <button onClick={enviar}>Importar</button> */}
-          </div>
+            <button onClick={enviar}>Importar</button>
+          </div> */}
         </div>
       </div>
     </>

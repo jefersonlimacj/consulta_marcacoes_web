@@ -5,6 +5,7 @@ import { useEditMarcacao, useMarcacoes } from "../hook/useMarcacoes";
 import { LinhaMarcacao } from "../components/linhaMarcacao";
 import { CircleCheck, CircleX, Loader2 } from "lucide-react";
 import styled from "styled-components";
+import { NOMEM } from "dns";
 
 function Home() {
   return (
@@ -25,8 +26,8 @@ function HomeConteudo() {
   const [cxModal, setCxModal] = useState<boolean>(false);
   const [marcacaoSelecionada, setMarcacaoSelecionada] = useState<any>({});
 
-  const [fPaciente, setfPaciente] = useState<string>("");
-  const [fEspecialidade, setfEspecialidade] = useState<string>("");
+  const [buscaPaciente, setBuscaPaciente] = useState<string>("");
+  const [buscaEspecialidade, setBuscaEspecialidade] = useState<string>("");
 
   const listaMarcacoes = marcacoes.filter((e) => e.status === "AGUARDANDO");
 
@@ -60,6 +61,13 @@ function HomeConteudo() {
       alert(error);
     }
   };
+
+  function normalizarTexto(texto: string) {
+    return texto
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+  }
 
   return (
     <div
@@ -98,16 +106,16 @@ function HomeConteudo() {
         <TextoEntrada
           placeholder="Pesquise pelo nome do Paciente"
           largura="40%"
-          onChange={(e) => setfPaciente(e.target.value)}
+          onChange={(e) => setBuscaPaciente(e.target.value)}
           type="text"
-          value={fPaciente}
+          value={buscaPaciente}
         />
         <TextoEntrada
           placeholder="Pesquise pela Especialidade"
           largura="40%"
-          onChange={(e) => setfEspecialidade(e.target.value)}
+          onChange={(e) => setBuscaEspecialidade(e.target.value)}
           type="text"
-          value={fEspecialidade}
+          value={buscaEspecialidade}
         />
         <div
           style={{
@@ -254,27 +262,41 @@ function HomeConteudo() {
       >
         {(
           listaMarcacoes?.filter((p) => {
-            const porNome = p.paciente.nome
-              .toLowerCase()
-              .includes(fPaciente.toLocaleLowerCase());
-            const porEspecialidade = p.especialidade.nome
-              .toLocaleLowerCase()
-              .includes(fEspecialidade.toLocaleLowerCase());
+            const nome = normalizarTexto(p.paciente.nome)
+            const especialidade = normalizarTexto(p.especialidade.nome)
+
+            const bNome = normalizarTexto(buscaPaciente)
+            const bEspecialidade = normalizarTexto(buscaEspecialidade)
+
+            const porNome = nome.includes(bNome)
+            const porEspecialidade = especialidade.includes(bEspecialidade)
             return porNome && porEspecialidade;
           }) || []
-        ).map((marcacao) => {
-          return (
-            <LinhaMarcacao
-              key={marcacao.id}
-              loadingId={loadingId}
-              marcacao={marcacao}
-              editarMarcacao={editarMarcacao}
-              cancelarMarcacao={cancelarMarcacao}
-              setMarcacaoSelecionada={setMarcacaoSelecionada}
-              setOpen={() => setCxModal(true)}
-            />
-          );
-        })}
+        )
+          .sort((a, b) => {
+            // 2. Converte as datas para objetos Date para garantir a comparação correta.
+            // É fundamental que a.dataAtendimento e b.dataAtendimento sejam strings
+            // em um formato que o construtor new Date() consiga interpretar (ex: ISO 8601).
+            const dataA = new Date(a.dataAtendimento);
+            const dataB = new Date(b.dataAtendimento);
+
+            // 3. Retorna a diferença em milissegundos.
+            // dataA.getTime() - dataB.getTime() resulta em ordem crescente (a mais antiga primeiro).
+            return dataA.getTime() - dataB.getTime();
+          })
+          .map((marcacao) => {
+            return (
+              <LinhaMarcacao
+                key={marcacao.id}
+                loadingId={loadingId}
+                marcacao={marcacao}
+                editarMarcacao={editarMarcacao}
+                cancelarMarcacao={cancelarMarcacao}
+                setMarcacaoSelecionada={setMarcacaoSelecionada}
+                setOpen={() => setCxModal(true)}
+              />
+            );
+          })}
       </div>
       <ModalMarcacao
         open={cxModal}
@@ -435,6 +457,12 @@ function ModalMarcacao({
               Liderança:{" "}
               <a style={{ fontSize: 16, fontWeight: 500 }}>
                 {marcacao?.lider?.nome}
+              </a>
+            </p>
+            <p style={{ fontSize: 12 }}>
+              Data Atendimento:{" "}
+              <a style={{ fontSize: 16, fontWeight: 500 }}>
+                {formatarData(marcacao?.dataAtendimento)}
               </a>
             </p>
           </div>
@@ -618,8 +646,12 @@ function ModalMarcacao({
             gap: 15,
           }}
         >
-          <BtnAcao onClick={()=>(editarMarcacao(marcacao?.id))}>
-            {loadingId ? <Loader2 className="animate-spin"/> : <CircleCheck color="#0dac4b" />}
+          <BtnAcao onClick={() => editarMarcacao(marcacao?.id)}>
+            {loadingId ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <CircleCheck color="#0dac4b" />
+            )}
             <p>Marcado</p>
           </BtnAcao>
           <BtnAcao onClick={() => cancelarMarcacao(marcacao?.id)}>

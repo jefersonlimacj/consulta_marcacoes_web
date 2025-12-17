@@ -5,8 +5,6 @@ import { useEditMarcacao, useMarcacoes } from "../hook/useMarcacoes";
 import { LinhaMarcacao } from "../components/linhaMarcacao";
 import { CircleCheck, CircleX, Loader2 } from "lucide-react";
 import styled from "styled-components";
-import { NOMEM } from "dns";
-
 function Home() {
   return (
     <>

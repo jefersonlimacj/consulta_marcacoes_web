@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { BaseTelas } from "../components/baseTelas";
 import { useEditMarcacao, useMarcacoes } from "../hook/useMarcacoes";
-// import { useUsers } from "../hook/useAdmin";
 import { LinhaMarcacao } from "../components/linhaMarcacao";
 import { CircleCheck, CircleX, Loader2 } from "lucide-react";
 import styled from "styled-components";
@@ -260,14 +259,14 @@ function HomeConteudo() {
       >
         {(
           listaMarcacoes?.filter((p) => {
-            const nome = normalizarTexto(p.paciente.nome)
-            const especialidade = normalizarTexto(p.especialidade.nome)
+            const nome = normalizarTexto(p.paciente.nome);
+            const especialidade = normalizarTexto(p.especialidade.nome);
 
-            const bNome = normalizarTexto(buscaPaciente)
-            const bEspecialidade = normalizarTexto(buscaEspecialidade)
+            const bNome = normalizarTexto(buscaPaciente);
+            const bEspecialidade = normalizarTexto(buscaEspecialidade);
 
-            const porNome = nome.includes(bNome)
-            const porEspecialidade = especialidade.includes(bEspecialidade)
+            const porNome = nome.includes(bNome);
+            const porEspecialidade = especialidade.includes(bEspecialidade);
             return porNome && porEspecialidade;
           }) || []
         )

@@ -15,7 +15,7 @@ function Home() {
 export default Home;
 
 function HomeConteudo() {
-  const { marcacoes, refetch } = useMarcacoes();
+  const { marcacoes, loading, refetch } = useMarcacoes();
   // const { usuarios } = useUsers();
 
   const [loadingId, setLoadingId] = useState<string>("");
@@ -133,7 +133,7 @@ function HomeConteudo() {
       <div
         style={{
           width: "100%",
-          height: "42px",
+          height: 40,
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
@@ -251,49 +251,56 @@ function HomeConteudo() {
       <div
         style={{
           width: "100%",
-          height: "auto",
+          height: 500,
           overflowY: "auto",
           scrollbarWidth: "none",
           paddingBottom: 10,
         }}
       >
-        {(
-          listaMarcacoes?.filter((p) => {
-            const nome = normalizarTexto(p.paciente.nome);
-            const especialidade = normalizarTexto(p.especialidade.nome);
+        {loading ? (
+          <div style={{width:"100%", height:500, display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", gap:10}}>
+            <Loader2 className="animate-spin" size={50} color="#0099BB" />
+            <p>Carregando</p>
+          </div>
+        ) : (
+          (
+            listaMarcacoes?.filter((p) => {
+              const nome = normalizarTexto(p.paciente.nome);
+              const especialidade = normalizarTexto(p.especialidade.nome);
 
-            const bNome = normalizarTexto(buscaPaciente);
-            const bEspecialidade = normalizarTexto(buscaEspecialidade);
+              const bNome = normalizarTexto(buscaPaciente);
+              const bEspecialidade = normalizarTexto(buscaEspecialidade);
 
-            const porNome = nome.includes(bNome);
-            const porEspecialidade = especialidade.includes(bEspecialidade);
-            return porNome && porEspecialidade;
-          }) || []
-        )
-          .sort((a, b) => {
-            // 2. Converte as datas para objetos Date para garantir a comparação correta.
-            // É fundamental que a.dataAtendimento e b.dataAtendimento sejam strings
-            // em um formato que o construtor new Date() consiga interpretar (ex: ISO 8601).
-            const dataA = new Date(a.dataAtendimento);
-            const dataB = new Date(b.dataAtendimento);
+              const porNome = nome.includes(bNome);
+              const porEspecialidade = especialidade.includes(bEspecialidade);
+              return porNome && porEspecialidade;
+            }) || []
+          )
+            .sort((a, b) => {
+              // 2. Converte as datas para objetos Date para garantir a comparação correta.
+              // É fundamental que a.dataAtendimento e b.dataAtendimento sejam strings
+              // em um formato que o construtor new Date() consiga interpretar (ex: ISO 8601).
+              const dataA = new Date(a.dataAtendimento);
+              const dataB = new Date(b.dataAtendimento);
 
-            // 3. Retorna a diferença em milissegundos.
-            // dataA.getTime() - dataB.getTime() resulta em ordem crescente (a mais antiga primeiro).
-            return dataA.getTime() - dataB.getTime();
-          })
-          .map((marcacao) => {
-            return (
-              <LinhaMarcacao
-                key={marcacao.id}
-                loadingId={loadingId}
-                marcacao={marcacao}
-                editarMarcacao={editarMarcacao}
-                cancelarMarcacao={cancelarMarcacao}
-                setMarcacaoSelecionada={setMarcacaoSelecionada}
-                setOpen={() => setCxModal(true)}
-              />
-            );
-          })}
+              // 3. Retorna a diferença em milissegundos.
+              // dataA.getTime() - dataB.getTime() resulta em ordem crescente (a mais antiga primeiro).
+              return dataA.getTime() - dataB.getTime();
+            })
+            .map((marcacao) => {
+              return (
+                <LinhaMarcacao
+                  key={marcacao.id}
+                  loadingId={loadingId}
+                  marcacao={marcacao}
+                  editarMarcacao={editarMarcacao}
+                  cancelarMarcacao={cancelarMarcacao}
+                  setMarcacaoSelecionada={setMarcacaoSelecionada}
+                  setOpen={() => setCxModal(true)}
+                />
+              );
+            })
+        )}
       </div>
       <ModalMarcacao
         open={cxModal}

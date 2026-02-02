@@ -297,6 +297,7 @@ function BtnActions({
         alignItems: "center",
         justifyContent: "space-between",
       }}
+      onClick={(e)=> e.stopPropagation()}
     >
       <BtnEsqConfirm onClick={editar}>
         {loadingId === idMarcacao ? (

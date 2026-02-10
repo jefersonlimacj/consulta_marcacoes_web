@@ -7,6 +7,7 @@ import { usePacientes } from "../hook/usePaciente";
 import { useParticipacoes } from "../hook/useParticipacao";
 import { LinhaParticipacao } from "../components/linhaParticipacao";
 import { ModalParticipacaoEdit } from "./modals/participacaoEdit";
+import { useNavigate } from "react-router-dom";
 
 function Painel() {
   return (
@@ -296,8 +297,8 @@ function Participacoes() {
                 key={p.id}
                 p={p}
                 onClick={() => {
-                    setParticipacao(p);
-                    setOpen(true);
+                  setParticipacao(p);
+                  setOpen(true);
                 }}
               />
             ))
@@ -359,6 +360,7 @@ interface FeiradeSaudeMenuProps {
 }
 
 function FeiradeSaudeMenu({ setConteudo }: FeiradeSaudeMenuProps) {
+  const navigate = useNavigate();
   return (
     <div
       style={{
@@ -381,7 +383,11 @@ function FeiradeSaudeMenu({ setConteudo }: FeiradeSaudeMenuProps) {
         boxShadow: "2px 2px 5px #00000020",
       }}
     >
-      <img src="src\assets\Marca-Frente.png" alt="" width={"90%"} />
+      <img
+        src="https://iyqleanlhzcnndzuugkg.supabase.co/storage/v1/object/public/neofrotabkt/Marca-Frente.png"
+        alt=""
+        width={"90%"}
+      />
       <div
         style={{
           width: "100%",
@@ -408,11 +414,21 @@ function FeiradeSaudeMenu({ setConteudo }: FeiradeSaudeMenuProps) {
           <p>Pacientes</p>
         </BtnMenuStyle>
       </div>
-      <BtnMenuStyle $cor={"#15ff78"} style={{ zIndex: 1 }}>
+      <BtnMenuStyle
+        $cor={"#15ff78"}
+        style={{ zIndex: 1 }}
+        onClick={() => {
+          navigate("/home");
+        }}
+      >
         <p>Sair</p>
         <LogOut size={16} color="#0030FF" />
       </BtnMenuStyle>
-      <img src="src\assets\Marca-Costas.png" alt="" width={"90%"} />
+      <img
+        src="https://iyqleanlhzcnndzuugkg.supabase.co/storage/v1/object/public/neofrotabkt/Marca-Costas.png"
+        alt=""
+        width={"90%"}
+      />
       <div
         style={{
           position: "absolute",

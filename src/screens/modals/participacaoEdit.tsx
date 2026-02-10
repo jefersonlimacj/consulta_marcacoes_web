@@ -127,7 +127,7 @@ export function ModalParticipacaoEdit({
       >
         <div
           style={{
-            width: "75%",
+            width: "90%",
             scale: open ? 1 : 0.5,
             backgroundColor: "#F4F4F4",
             boxShadow: "5px 5px 10px #55555520",

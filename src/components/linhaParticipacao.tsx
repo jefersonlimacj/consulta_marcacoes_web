@@ -10,10 +10,10 @@ import {
 
 type LinhaParticipacaoProps = {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
-  p:any
+  p: any;
 };
 
-export function LinhaParticipacao({onClick, p}: LinhaParticipacaoProps) {
+export function LinhaParticipacao({ onClick, p }: LinhaParticipacaoProps) {
   return (
     <div
       onClick={onClick}
@@ -32,11 +32,23 @@ export function LinhaParticipacao({onClick, p}: LinhaParticipacaoProps) {
         zIndex: 10,
       }}
     >
-      <div style={{ width: "20%" }}>
-        <p>{p?.paciente?.nome}</p>
+      <div
+        style={{
+          width: "20%",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      >
+        <p  style={{
+          width: "100%",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}>{p?.paciente?.nome}</p>
       </div>
-      <div style={{ width: "10%" }}>
-        <p>
+      <div style={{ width: "10%", paddingLeft: 10 }}>
+        <p style={{fontSize: 13, fontWeight:500}}>
           {p?.paciente?.telefone
             ? formatarTelefone(p?.paciente?.telefone)
             : "Sem telefone"}

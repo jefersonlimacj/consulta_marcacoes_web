@@ -4,6 +4,7 @@ import Home from "./screens/home";
 import Login from "./screens/login";
 import Consultas from "./screens/consultas";
 import Cadastros from "./screens/cadastros";
+import FeiradeSaude from "./screens/feira";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/consultas" element={<Consultas />} />
           <Route path="/cadastros" element={<Cadastros />} />
+          <Route path="/feiradesaude2026" element={<FeiradeSaude />} />
         </Routes>
       </BrowserRouter>
     </>

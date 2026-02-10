@@ -1,4 +1,4 @@
-import { ArrowBigRightDash } from "lucide-react";
+import { Ambulance, ArrowBigRightDash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { LayoutDashboard } from "lucide-react";
@@ -34,17 +34,21 @@ export function Menu() {
           <h1>Marcações</h1>
         </div>
         <ul>
-          <BtnMenuStyle onClick={() => navigate("/home")}>
+          <BtnMenuStyle onClick={() => navigate("/home")} $cor={"#0050FF"}>
             <LayoutDashboard />
             <p>Dashboard</p>
           </BtnMenuStyle>
-          <BtnMenuStyle onClick={() => navigate("/cadastros")}>
+          <BtnMenuStyle onClick={() => navigate("/cadastros")} $cor={"#0090FF"}>
             <CirclePlus />
             <p>Cadastro</p>
           </BtnMenuStyle>
-          <BtnMenuStyle onClick={() => navigate("/consultas")}>
+          <BtnMenuStyle onClick={() => navigate("/consultas")} $cor={"#00B0FF"}>
             <SquareChartGantt />
             <p>Consulta</p>
+          </BtnMenuStyle>
+          <BtnMenuStyle onClick={() => navigate("/feiradesaude2026")} $cor={"#00D1FF"}>
+            <Ambulance />
+            <p>Feira de Saúde</p>
           </BtnMenuStyle>
         </ul>
       </div>
@@ -74,7 +78,11 @@ export function Menu() {
   );
 }
 
-const BtnMenuStyle = styled.li`
+interface BtnMenuProps {
+  $cor: string;
+}
+
+const BtnMenuStyle = styled.li<BtnMenuProps>`
   background-color: #e0e0e0;
   padding: 5px 10px;
   width: 100%;
@@ -88,6 +96,6 @@ const BtnMenuStyle = styled.li`
   transition: all ease-in-out 0.2s;
 
   &:hover {
-    background-color: #d0d0d0;
+    background-color: ${(props) => props.$cor || "#0090ff90"};
   }
 `;

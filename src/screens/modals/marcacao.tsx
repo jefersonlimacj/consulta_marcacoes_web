@@ -34,7 +34,7 @@ export function BtnNovaMarcacao() {
 
   const pacienteSelecionado = pacientes?.find((p: any) => p.id === pacienteId);
   const especialidadeSelecionada = especialidades?.find(
-    (e: any) => e.id === especialidadeId
+    (e: any) => e.id === especialidadeId,
   );
   const liderSelecionado = lideres?.find((l: any) => l.id === liderId);
   const medicoSelecionado = medicos?.find((m: any) => m.id === medicoId);
@@ -192,7 +192,7 @@ export function BtnNovaMarcacao() {
                 listaPacientes={pacientes}
                 paciente={pacienteId}
                 setPaciente={setPacienteId}
-                refetch={atualizarPacientes}
+                atualizarPacientes={atualizarPacientes}
               />
             </div>
             <div
@@ -360,7 +360,7 @@ export function BtnNovaMarcacao() {
                     type="checkbox"
                     onChange={(e) => {
                       setRetorno(e.target.checked);
-                      setMedicoId(""), setDataMarcada("");
+                      (setMedicoId(""), setDataMarcada(""));
                     }}
                   />
                 </div>
@@ -419,7 +419,7 @@ export function BtnNovaMarcacao() {
                       style={{
                         fontSize: 18,
                         fontWeight: 600,
-                        width:"100%",
+                        width: "100%",
                         whiteSpace: "nowrap",
                         textOverflow: "ellipsis",
                         overflow: "hiddens",
@@ -497,12 +497,12 @@ function ModalPacientes({
   paciente,
   setPaciente,
   listaPacientes,
-  refetch,
+  atualizarPacientes,
 }: {
   paciente: any;
   setPaciente: any;
   listaPacientes: any;
-  refetch: () => void;
+  atualizarPacientes: () => void;
 }) {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -555,7 +555,7 @@ function ModalPacientes({
             value={nomePaciente}
             onChange={(e) => setNomePaciente(e.target.value)}
           />
-          <BtnRefresh onClick={refetch}>
+          <BtnRefresh onClick={() => atualizarPacientes()}>
             <RefreshCcw />
           </BtnRefresh>
         </div>

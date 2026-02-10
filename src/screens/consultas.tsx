@@ -15,7 +15,7 @@ function ConsultasConteudo() {
   const [id, setId] = useState<string>("");
   const [loadingId, setLoadingId] = useState<string>("");
 
-  // const listaMarcacoes = marcacoes.filter((e) => e.status === "REALIZADO");
+  const listaMarcacoes = marcacoes.filter((e) => e.status === "MARCADO" || e.status === "CANCELADO");
 
   const { editar, error } = useEditMarcacao();
 
@@ -40,7 +40,7 @@ function ConsultasConteudo() {
       <p style={{ textAlign: "center", marginBottom: 20 }}>
         Lista de Marcações Pendentes
       </p>
-      {marcacoes.map((marcacao: any) => {
+      {listaMarcacoes.map((marcacao: any) => {
         return (
           <LinhaMarcacao
             loadingId={loadingId}

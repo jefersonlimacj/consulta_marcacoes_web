@@ -80,7 +80,7 @@ function Login() {
         <div className="mx-auto flex flex-col max-w-3xl items-center gap-x-4 rounded-xl bg-white p-6 shadow-lg outline outline-black/5 dark:bg-slate-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10 gap-5">
           <p>Login </p>
           <EntradaNome nome={nome} setNome={setNome} />
-          <EntradaSenha senha={senha} setSenha={setSenha} />
+          <EntradaSenha senha={senha} setSenha={setSenha} fazerLogin={fazerLogin} />
           <div
             style={{
               width: "50%",
@@ -127,7 +127,7 @@ function EntradaNome({ nome, setNome }: { nome?: string; setNome?: any }) {
     </div>
   );
 }
-function EntradaSenha({ senha, setSenha }: { senha?: string; setSenha?: any }) {
+function EntradaSenha({ senha, setSenha, fazerLogin }: { senha?: string; setSenha?: any, fazerLogin?: any }) {
   return (
     <div
       style={{
@@ -144,6 +144,11 @@ function EntradaSenha({ senha, setSenha }: { senha?: string; setSenha?: any }) {
         style={{ width: "100%", outline: "none" }}
         value={senha}
         onChange={(e) => setSenha(e.target.value)}
+        onKeyDown={(e)=>{
+          if(e.key === "Enter"){
+            fazerLogin(e)
+          }
+        }}
       />
     </div>
   );

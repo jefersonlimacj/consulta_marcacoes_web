@@ -47,7 +47,9 @@ export function LinhaMarcacao({
             ? "#0099ff"
             : marcacao.status === "MARCADO"
             ? "#008000"
-            : ""
+            : marcacao.status === "CANCELADO"
+            ? "#DD0000"
+            : "#999999"
         }
       >
         {marcacao?.retorno ? (

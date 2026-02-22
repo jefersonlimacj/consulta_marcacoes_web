@@ -1,5 +1,6 @@
 import { CircleCheck, CircleX, LoaderCircle } from "lucide-react";
 import styled from "styled-components";
+import { useUser } from "../hook/useAdmin";
 
 interface LinhaMarcacaoProps {
   $borderLeft: string;
@@ -35,6 +36,8 @@ export function LinhaMarcacao({
   setOpen,
   setMarcacaoSelecionada,
 }: any) {
+  const id = localStorage.getItem("id");
+  const { usuario } = useUser(String(id));
   return (
     <>
       <LinhaMarcacaoStyled
@@ -46,10 +49,10 @@ export function LinhaMarcacao({
           marcacao.status === "AGUARDANDO"
             ? "#0099ff"
             : marcacao.status === "MARCADO"
-            ? "#008000"
-            : marcacao.status === "CANCELADO"
-            ? "#DD0000"
-            : "#999999"
+              ? "#008000"
+              : marcacao.status === "CANCELADO"
+                ? "#DD0000"
+                : "#999999"
         }
       >
         {marcacao?.retorno ? (
@@ -217,21 +220,34 @@ export function LinhaMarcacao({
         >
           <p>{formatarTelefone(marcacao.paciente.telefone)}</p>
         </div>
-        <div
-          style={{
-            width: "8%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <BtnActions
-            editar={() => editarMarcacao(marcacao.id)}
-            remover={() => cancelarMarcacao(marcacao.id)}
-            idMarcacao={marcacao.id}
-            loadingId={loadingId}
+        {usuario?.regra === "admin" ? (
+          <div
+            style={{
+              width: "8%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <BtnActions
+              editar={() => editarMarcacao(marcacao.id)}
+              remover={() => cancelarMarcacao(marcacao.id)}
+              idMarcacao={marcacao.id}
+              loadingId={loadingId}
+            />
+          </div>
+        ) : (
+          <div
+            style={{
+              width: "8%",
+              height: 5,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              backgroundColor: "#55555520",
+            }}
           />
-        </div>
+        )}
       </LinhaMarcacaoStyled>
     </>
   );
@@ -299,7 +315,7 @@ function BtnActions({
         alignItems: "center",
         justifyContent: "space-between",
       }}
-      onClick={(e)=> e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
     >
       <BtnEsqConfirm onClick={editar}>
         {loadingId === idMarcacao ? (

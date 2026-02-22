@@ -1,12 +1,50 @@
 import { gql } from "@apollo/client";
 import { useMutation, useQuery } from "@apollo/client/react";
 
+const GET_USER = gql`
+  query Usuario($usuarioId: ID!) {
+    usuario(id: $usuarioId) {
+      id
+      username
+      password
+      regra
+    }
+  }
+`;
+
+interface UserResponse {
+  usuario: {
+    id: string;
+    username: string;
+    password: string;
+    regra: string;
+  };
+}
+
+export function useUser(id: string) {
+  const { data, loading, error, refetch } = useQuery<UserResponse>(GET_USER, {
+    variables: {
+      usuarioId: id,
+    },
+    skip: !id,
+    fetchPolicy: "network-only",
+  });
+
+  return {
+    usuario: data?.usuario,
+    loading,
+    error,
+    refetch: refetch || Promise.resolve(),
+  };
+}
+
 const GET_USERS = gql`
   query Usuarios {
     usuarios {
       id
       username
       password
+      regra
     }
   }
 `;
@@ -14,6 +52,7 @@ const GET_USERS = gql`
 interface User {
   id: string;
   username: string;
+  regra: string;
 }
 
 interface ListUsersResponse {
@@ -25,7 +64,7 @@ export function useUsers() {
     GET_USERS,
     {
       fetchPolicy: "cache-and-network",
-    }
+    },
   );
 
   return {

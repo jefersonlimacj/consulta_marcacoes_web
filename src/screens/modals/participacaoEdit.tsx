@@ -14,6 +14,7 @@ import {
   useEditParticipacao,
   useParticipacoes,
 } from "../../hook/useParticipacao";
+import { useUser } from "../../hook/useAdmin";
 
 type ModalParticipacaoEditProps = {
   p: any;
@@ -26,6 +27,9 @@ export function ModalParticipacaoEdit({
   open,
   setOpen,
 }: ModalParticipacaoEditProps) {
+  const id = localStorage.getItem("id");
+  const { usuario } = useUser(String(id));
+
   const [cardiologista, setCardiologista] = useState<boolean>(false);
   const [ginecologista, setGinecologista] = useState<boolean>(false);
   const [urologista, setUrologista] = useState<boolean>(false);
@@ -272,12 +276,15 @@ export function ModalParticipacaoEdit({
               <p style={{ fontSize: 12 }}>
                 Data de Nascimento:{" "}
                 <a style={{ fontSize: 18, fontWeight: 600 }}>
-                  {new Date(p?.paciente?.dataNascimento).toLocaleDateString("pt-BR",{
-                    timeZone: "UTC",
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                  }) || "Aguarde..."}
+                  {new Date(p?.paciente?.dataNascimento).toLocaleDateString(
+                    "pt-BR",
+                    {
+                      timeZone: "UTC",
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                    },
+                  ) || "Aguarde..."}
                 </a>
               </p>
             </div>
@@ -294,7 +301,11 @@ export function ModalParticipacaoEdit({
               }}
             >
               <BtnEspecialidades
-                onClick={() => setCardiologista(!cardiologista)}
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setCardiologista(!cardiologista)
+                    : undefined
+                }
                 $cor={cardiologista ? "#15ff89" : "#DDD"}
                 $cor2={cardiologista ? "#14f776" : "#ccc"}
               >
@@ -306,7 +317,11 @@ export function ModalParticipacaoEdit({
                 )}
               </BtnEspecialidades>
               <BtnEspecialidades
-                onClick={() => setGinecologista(!ginecologista)}
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setGinecologista(!ginecologista)
+                    : undefined
+                }
                 $cor={ginecologista ? "#15ff89" : "#DDD"}
                 $cor2={ginecologista ? "#14f776" : "#ccc"}
               >
@@ -318,7 +333,11 @@ export function ModalParticipacaoEdit({
                 )}
               </BtnEspecialidades>
               <BtnEspecialidades
-                onClick={() => setOrtopedista(!ortopedista)}
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setOrtopedista(!ortopedista)
+                    : undefined
+                }
                 $cor={ortopedista ? "#15ff89" : "#DDD"}
                 $cor2={ortopedista ? "#14f776" : "#ccc"}
               >
@@ -330,7 +349,11 @@ export function ModalParticipacaoEdit({
                 )}
               </BtnEspecialidades>
               <BtnEspecialidades
-                onClick={() => setUrologista(!urologista)}
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setUrologista(!urologista)
+                    : undefined
+                }
                 $cor={urologista ? "#15ff89" : "#DDD"}
                 $cor2={urologista ? "#14f776" : "#ccc"}
               >
@@ -342,7 +365,11 @@ export function ModalParticipacaoEdit({
                 )}
               </BtnEspecialidades>
               <BtnEspecialidades
-                onClick={() => setOftalmologista(!oftalmologista)}
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setOftalmologista(!oftalmologista)
+                    : undefined
+                }
                 $cor={oftalmologista ? "#15ff89" : "#DDD"}
                 $cor2={oftalmologista ? "#14f776" : "#ccc"}
               >
@@ -354,7 +381,11 @@ export function ModalParticipacaoEdit({
                 )}
               </BtnEspecialidades>
               <BtnEspecialidades
-                onClick={() => setOdontologia(!odontologia)}
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setOdontologia(!odontologia)
+                    : undefined
+                }
                 $cor={odontologia ? "#15ff89" : "#DDD"}
                 $cor2={odontologia ? "#14f776" : "#ccc"}
               >
@@ -366,7 +397,11 @@ export function ModalParticipacaoEdit({
                 )}
               </BtnEspecialidades>
               <BtnEspecialidades
-                onClick={() => setUltrassom(!ultrassom)}
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setUltrassom(!ultrassom)
+                    : undefined
+                }
                 $cor={ultrassom ? "#15ff89" : "#DDD"}
                 $cor2={ultrassom ? "#14f776" : "#ccc"}
               >
@@ -378,7 +413,11 @@ export function ModalParticipacaoEdit({
                 )}
               </BtnEspecialidades>
               <BtnEspecialidades
-                onClick={() => setMamografia(!mamografia)}
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setMamografia(!mamografia)
+                    : undefined
+                }
                 $cor={mamografia ? "#15ff89" : "#DDD"}
                 $cor2={mamografia ? "#14f776" : "#ccc"}
               >
@@ -390,7 +429,11 @@ export function ModalParticipacaoEdit({
                 )}
               </BtnEspecialidades>
               <BtnEspecialidades
-                onClick={() => setEletrocardiograma(!eletrocardiograma)}
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setEletrocardiograma(!eletrocardiograma)
+                    : undefined
+                }
                 $cor={eletrocardiograma ? "#15ff89" : "#DDD"}
                 $cor2={eletrocardiograma ? "#14f776" : "#ccc"}
               >
@@ -476,24 +519,26 @@ export function ModalParticipacaoEdit({
                 {espera ? <Loader2 className="animate-spin" /> : "Desmarcar"}
               </button>
             </div>
-            <button
-              style={{
-                width: "15%",
-                padding: 5,
-                backgroundColor: "#0090ff90",
-                borderRadius: 14,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-              disabled={espera}
-              onClick={() => {
-                enviarParticipacao();
-              }}
-            >
-              {espera ? <Loader2 className="animate-spin" /> : "Atualizar"}
-            </button>
+            {usuario?.regra === "admin" ? (
+              <button
+                style={{
+                  width: "15%",
+                  padding: 5,
+                  backgroundColor: "#0090ff90",
+                  borderRadius: 14,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+                disabled={espera}
+                onClick={() => {
+                  enviarParticipacao();
+                }}
+              >
+                {espera ? <Loader2 className="animate-spin" /> : "Atualizar"}
+              </button>
+            ) : null}
           </div>
         </div>
       </div>

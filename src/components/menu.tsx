@@ -4,9 +4,12 @@ import { styled } from "styled-components";
 import { LayoutDashboard } from "lucide-react";
 import { CirclePlus } from "lucide-react";
 import { SquareChartGantt } from "lucide-react";
+import { useUser } from "../hook/useAdmin";
 
 export function Menu() {
-  const user = localStorage.getItem("user");
+  const id = localStorage.getItem("id");
+  const { usuario } = useUser(String(id));
+
   const navigate = useNavigate();
   return (
     <div
@@ -38,15 +41,28 @@ export function Menu() {
             <LayoutDashboard />
             <p>Dashboard</p>
           </BtnMenuStyle>
-          <BtnMenuStyle onClick={() => navigate("/cadastros")} $cor={"#0090FF"}>
-            <CirclePlus />
-            <p>Cadastro</p>
-          </BtnMenuStyle>
-          <BtnMenuStyle onClick={() => navigate("/consultas")} $cor={"#00B0FF"}>
-            <SquareChartGantt />
-            <p>Consulta</p>
-          </BtnMenuStyle>
-          <BtnMenuStyle onClick={() => navigate("/feiradesaude2026")} $cor={"#00D1FF"}>
+          {usuario?.regra === "admin" ? (
+            <BtnMenuStyle
+              onClick={() => navigate("/cadastros")}
+              $cor={"#0090FF"}
+            >
+              <CirclePlus />
+              <p>Cadastro</p>
+            </BtnMenuStyle>
+          ) : null}
+          {usuario?.regra === "admin" ? (
+            <BtnMenuStyle
+              onClick={() => navigate("/consultas")}
+              $cor={"#00B0FF"}
+            >
+              <SquareChartGantt />
+              <p>Consulta</p>
+            </BtnMenuStyle>
+          ) : null}
+          <BtnMenuStyle
+            onClick={() => navigate("/feiradesaude2026")}
+            $cor={"#00D1FF"}
+          >
             <Ambulance />
             <p>Feira de Saúde</p>
           </BtnMenuStyle>
@@ -68,7 +84,7 @@ export function Menu() {
           navigate("/");
         }}
       >
-        <p>{user}</p>
+        <p>{usuario?.username}</p>
         <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
           <p>Sair</p>
           <ArrowBigRightDash />

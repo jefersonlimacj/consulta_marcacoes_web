@@ -10,6 +10,7 @@ import { LinhaParticipacao } from "../components/linhaParticipacao";
 import { ModalParticipacaoEdit } from "./modals/participacaoEdit";
 import { useNavigate } from "react-router-dom";
 import { Bar, Pie, PieChart, XAxis, YAxis } from "recharts";
+import { useUser } from "../hook/useAdmin";
 
 function Painel() {
   const { participacoes } = useParticipacoes();
@@ -693,19 +694,19 @@ function LinhaEspecialidade({
         style={{
           width: "13.3%",
           textAlign: "center",
-         
         }}
       >
         {c}
       </p>
-        <p
-          style={{
-            width: "13.3%",
-            textAlign: "center", backgroundColor: "#EFEFEF60",
-          }}
-        >
-          {C}
-        </p>
+      <p
+        style={{
+          width: "13.3%",
+          textAlign: "center",
+          backgroundColor: "#EFEFEF60",
+        }}
+      >
+        {C}
+      </p>
       <div
         style={{
           width: "16.6%",
@@ -949,6 +950,9 @@ function Participacoes() {
       .toLowerCase();
   }
 
+  const id = localStorage.getItem("id");
+  const { usuario } = useUser(String(id));
+
   return (
     <div
       style={{
@@ -982,9 +986,8 @@ function Participacoes() {
           onChange={(e) => setBuscarNomes(e.target.value)}
           value={buscarNomes}
         />
-
-        <BtnNovaParticipacao />
-        <BtnCadastrarPacienteMenor />
+        {usuario?.regra === "admin" ? <BtnNovaParticipacao /> : null}
+        {usuario?.regra === "admin" ? <BtnCadastrarPacienteMenor /> : null}
       </div>
       {Cabecalho}
       <div

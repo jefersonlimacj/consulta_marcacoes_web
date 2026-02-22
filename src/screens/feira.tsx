@@ -1,4 +1,5 @@
 import { Loader2, LogOut } from "lucide-react";
+import { BarChart, ResponsiveContainer } from "recharts";
 import { useState, type JSX } from "react";
 import styled from "styled-components";
 import { BtnNovaParticipacao } from "./modals/participacao";
@@ -8,21 +9,746 @@ import { useParticipacoes } from "../hook/useParticipacao";
 import { LinhaParticipacao } from "../components/linhaParticipacao";
 import { ModalParticipacaoEdit } from "./modals/participacaoEdit";
 import { useNavigate } from "react-router-dom";
+import { Bar, Pie, PieChart, XAxis, YAxis } from "recharts";
 
 function Painel() {
+  const { participacoes } = useParticipacoes();
   return (
     <div
       style={{
         width: "100%",
         height: "100%",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#FFFFFF20",
-        padding: 5,
+        overflow: "auto",
+        scrollbarWidth: "none",
+        gap: 10,
+        padding: 10,
       }}
     >
-      <p>Painel</p>
+      <TopoResumo p={participacoes} />
+      <LinhaGraficos p={participacoes} />
+      <DetalhesEspecialidades p={participacoes} />
+    </div>
+  );
+}
+
+function TopoResumo({ p }: { p: any }) {
+  const aguardando = p.filter((s: any) => s.statusFeira === "AGUARDANDO");
+  const confirmado = p.filter((s: any) => s.statusFeira === "CONFIRMADA");
+  const naoAtende = p.filter((s: any) => s.statusFeira === "PENDENTE");
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        backgroundColor: "#fff",
+        borderRadius: 14,
+        display: "flex",
+        flexDirection: "column",
+        padding: 10,
+        gap: 10,
+      }}
+    >
+      <h3 style={{ fontWeight: 600 }}>
+        Dashboard Feira de Saúde 2026 | Pré-Atendimento
+      </h3>
+      <div style={{ width: "100%", height: 1, backgroundColor: "#00000050" }} />
+      <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
+        <div
+          style={{
+            width: "25%",
+            height: 120,
+            backgroundColor: "#6abbfa",
+            borderRadius: 10,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <p style={{ fontWeight: 500, color: "#284760" }}>
+            Total de Solicitações
+          </p>
+          <p style={{ fontWeight: 700, fontSize: 48, color: "#284760" }}>
+            {p.length}
+          </p>
+        </div>
+        <div
+          style={{
+            width: "25%",
+            height: 120,
+            border: `3px solid #446e9350`,
+            borderRadius: 10,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <p style={{ fontWeight: 500 }}>Aguardando</p>
+          <p style={{ fontWeight: 700, fontSize: 48 }}>{aguardando.length}</p>
+        </div>
+
+        <div
+          style={{
+            width: "25%",
+            height: 120,
+            backgroundColor: "#8efa55",
+            borderRadius: 10,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <p style={{ fontWeight: 500, color: "#366020" }}>Confirmados</p>
+          <p style={{ fontWeight: 700, fontSize: 48, color: "#366020" }}>
+            {confirmado.length}
+          </p>
+        </div>
+        <div
+          style={{
+            width: "25%",
+            height: 120,
+            backgroundColor: "#fadb61",
+            borderRadius: 10,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <p style={{ fontWeight: 500, color: "#605425" }}>Não Atenderam</p>
+          <p style={{ fontWeight: 700, fontSize: 48, color: "#605425" }}>
+            {naoAtende.length}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const renderCustomizedLabel = ({
+  cx,
+  cy,
+  midAngle,
+  outerRadius,
+  percent,
+  fill,
+}: any) => {
+  const RADIAN = Math.PI / 180;
+  const radius = outerRadius + 5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill={fill}
+      textAnchor={x > cx ? "start" : "end"}
+      dominantBaseline="central"
+      fontWeight="bold"
+    >
+      {`${(percent * 100).toFixed(1)}%`}
+    </text>
+  );
+};
+
+function LinhaGraficos({ p }: { p: any }) {
+  const aguardando = p.filter((s: any) => s.statusFeira === "AGUARDANDO");
+  const confirmado = p.filter((s: any) => s.statusFeira === "CONFIRMADA");
+  const naoAtende = p.filter((s: any) => s.statusFeira === "PENDENTE");
+  const cancelado = p.filter((s: any) => s.statusFeira === "CANCELADA");
+
+  const dataStatus = [
+    { name: "Confirmados", value: confirmado.length, fill: "#8efa55" }, // Verde
+    { name: "Não Atenderam", value: naoAtende.length, fill: "#fadb61" }, // Vermelho
+    { name: "Cancelados", value: cancelado.length, fill: "#f87171" }, // Vermelho
+    { name: "Pendentes", value: aguardando.length, fill: "#DEDEDE" }, // Amarelo
+  ];
+
+  const cardiologista = p.filter((s: any) => s.cardiologista === true);
+  const ginecologista = p.filter((s: any) => s.ginecologista === true);
+  const ortopedista = p.filter((s: any) => s.ortopedista === true);
+  const urologista = p.filter((s: any) => s.urologista === true);
+  const oftalmologista = p.filter((s: any) => s.oftalmologista === true);
+  const odonto = p.filter((s: any) => s.odonto === true);
+  const usg = p.filter((s: any) => s.usg === true);
+  const mamografia = p.filter((s: any) => s.mamografia === true);
+  const eletrocardiograma = p.filter((s: any) => s.eletrocardiograma === true);
+
+  const dataEspecialidades = [
+    { name: "Cardiologista", value: cardiologista.length, fill: "#8efa55" }, // Amarelo
+    { name: "Ginecologista", value: ginecologista.length, fill: "#8efa55" }, // Amarelo
+    { name: "Ortopedista", value: ortopedista.length, fill: "#8efa55" }, // Amarelo
+    { name: "Urologista", value: urologista.length, fill: "#8efa55" }, // Amarelo
+    { name: "Oftalmologista", value: oftalmologista.length, fill: "#8efa55" }, // Amarelo
+    { name: "Odontologista", value: odonto.length, fill: "#8efa55" }, // Vermelho
+    { name: "USG", value: usg.length, fill: "#8efa55" }, // Verde
+    { name: "Mamografia", value: mamografia.length, fill: "#8efa55" }, // Vermelho
+    { name: "ECG", value: eletrocardiograma.length, fill: "#8efa55" }, // Vermelho
+  ].sort((a, b) => b.value - a.value);
+
+  const customTicks = Array.from({ length: 21 }, (_, i) => i * 5);
+
+  return (
+    <div
+      style={{ width: "100%", display: "flex", flexDirection: "row", gap: 10 }}
+    >
+      <div
+        style={{
+          width: "30%",
+          height: 350,
+          backgroundColor: "#fff",
+          borderRadius: 14,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 5,
+        }}
+      >
+        <p style={{ fontWeight: "bold", color: "#333" }}>
+          Status de Confirmação
+        </p>
+
+        <PieChart
+          style={{
+            width: "100%",
+            aspectRatio: 1,
+            maxWidth: 250,
+          }}
+          margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+        >
+          <Pie
+            dataKey="value"
+            data={dataStatus}
+            cx="50%"
+            cy="50%"
+            innerRadius="45%"
+            outerRadius="70%"
+            labelLine={false}
+            label={renderCustomizedLabel}
+          />
+        </PieChart>
+        {/* Legenda */}
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              <div
+                style={{
+                  width: 15,
+                  borderRadius: 4,
+                  height: 15,
+                  backgroundColor: "#DEDEDE",
+                }}
+              />
+              <p style={{ fontSize: 14 }}>Pendentes</p>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              <div
+                style={{
+                  width: 15,
+                  borderRadius: 4,
+                  height: 15,
+                  backgroundColor: "#fadb61",
+                }}
+              />
+              <p style={{ fontSize: 14 }}>Não Atenderam</p>
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              <div
+                style={{
+                  width: 15,
+                  borderRadius: 4,
+                  height: 15,
+                  backgroundColor: "#8efa55",
+                }}
+              />
+              <p style={{ fontSize: 14 }}>Confirmados</p>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              <div
+                style={{
+                  width: 15,
+                  borderRadius: 4,
+                  height: 15,
+                  backgroundColor: "#f87171",
+                }}
+              />
+              <p style={{ fontSize: 14 }}>Cancelados</p>
+            </div>
+          </div>
+        </div>
+        {/* Legenda FIM */}
+      </div>
+      <div
+        style={{
+          width: "70%",
+          height: 350,
+          backgroundColor: "#fff",
+          borderRadius: 14,
+          display: "flex",
+          flexDirection: "column",
+          padding: 10,
+          gap: 10,
+        }}
+      >
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          minWidth={1}
+          minHeight={1}
+        >
+          <BarChart
+            layout="vertical"
+            data={dataEspecialidades}
+            margin={{ top: 1, right: 1, bottom: 1, left: 1 }}
+          >
+            <XAxis type="number" ticks={customTicks} />
+
+            <YAxis dataKey="name" type="category" width={120} />
+
+            <Bar dataKey="value" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+function DetalhesEspecialidades({ p }: { p: any }) {
+  const cardiologista = p.filter((s: any) => s.cardiologista === true);
+  const ginecologista = p.filter((s: any) => s.ginecologista === true);
+  const ortopedista = p.filter((s: any) => s.ortopedista === true);
+  const urologista = p.filter((s: any) => s.urologista === true);
+  const oftalmologista = p.filter((s: any) => s.oftalmologista === true);
+  const odonto = p.filter((s: any) => s.odonto === true);
+  const usg = p.filter((s: any) => s.usg === true);
+  const mamografia = p.filter((s: any) => s.mamografia === true);
+  const eletrocardiograma = p.filter((s: any) => s.eletrocardiograma === true);
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        backgroundColor: "#fff",
+        borderRadius: 14,
+        display: "flex",
+        flexDirection: "column",
+        padding: 10,
+        gap: 10,
+      }}
+    >
+      {/* Cabeçalho */}
+      <h3 style={{ fontWeight: 600 }}>Controle por Especialidade</h3>
+      <div style={{ width: "100%", height: 1, backgroundColor: "#00000050" }} />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          width: "100%",
+          backgroundColor: "#55DDff",
+          justifyContent: "space-between",
+        }}
+      >
+        <p
+          style={{
+            width: "20%",
+            textAlign: "center",
+          }}
+        >
+          Especialidade
+        </p>
+        <p
+          style={{
+            width: "13.3%",
+            textAlign: "center",
+          }}
+        >
+          Total Solicitado
+        </p>
+        <p
+          style={{
+            width: "13.3%",
+            textAlign: "center",
+          }}
+        >
+          Pendentes
+        </p>
+        <p
+          style={{
+            width: "13.3%",
+            textAlign: "center",
+          }}
+        >
+          Cancelados
+        </p>
+        <p
+          style={{
+            width: "13.3%",
+            textAlign: "center",
+          }}
+        >
+          Confirmados
+        </p>
+        <p
+          style={{
+            width: "16.6%",
+            textAlign: "center",
+          }}
+        >
+          Capacidade Máx.
+        </p>
+        <p
+          style={{
+            width: "10%",
+            textAlign: "center",
+          }}
+        >
+          Atendidos
+        </p>
+      </div>
+      {/* Cabeçalho Fim */}
+      {/* Linhas Por Especialidade */}
+      <div
+        style={{
+          width: "100%",
+          backgroundColor: "#fff",
+          borderRadius: 14,
+          display: "flex",
+          flexDirection: "column",
+          gap: 3,
+        }}
+      >
+        <LinhaEspecialidade
+          e={"Cardiologista"}
+          tS={cardiologista.length}
+          p={
+            cardiologista.filter((s: any) => s.statusFeira === "PENDENTE")
+              .length +
+            cardiologista.filter((s: any) => s.statusFeira === "AGUARDANDO")
+              .length
+          }
+          C={
+            cardiologista.filter((s: any) => s.statusFeira === "CONFIRMADA")
+              .length
+          }
+          c={
+            cardiologista.filter((s: any) => s.statusFeira === "CANCELADA")
+              .length
+          }
+          Max={30}
+          tA={0}
+        />
+        <LinhaEspecialidade
+          e={"Ginecologista"}
+          tS={ginecologista.length}
+          p={
+            ginecologista.filter((s: any) => s.statusFeira === "PENDENTE")
+              .length +
+            ginecologista.filter((s: any) => s.statusFeira === "AGUARDANDO")
+              .length
+          }
+          C={
+            ginecologista.filter((s: any) => s.statusFeira === "CONFIRMADA")
+              .length
+          }
+          c={
+            ginecologista.filter((s: any) => s.statusFeira === "CANCELADA")
+              .length
+          }
+          Max={30}
+          tA={0}
+        />
+        <LinhaEspecialidade
+          e={"Ortopedista"}
+          tS={ortopedista.length}
+          p={
+            ortopedista.filter((s: any) => s.statusFeira === "PENDENTE")
+              .length +
+            ortopedista.filter((s: any) => s.statusFeira === "AGUARDANDO")
+              .length
+          }
+          C={
+            ortopedista.filter((s: any) => s.statusFeira === "CONFIRMADA")
+              .length
+          }
+          c={
+            ortopedista.filter((s: any) => s.statusFeira === "CANCELADA").length
+          }
+          Max={30}
+          tA={0}
+        />
+        <LinhaEspecialidade
+          e={"Urologista"}
+          tS={urologista.length}
+          p={
+            urologista.filter((s: any) => s.statusFeira === "PENDENTE").length +
+            urologista.filter((s: any) => s.statusFeira === "AGUARDANDO").length
+          }
+          C={
+            urologista.filter((s: any) => s.statusFeira === "CONFIRMADA").length
+          }
+          c={
+            urologista.filter((s: any) => s.statusFeira === "CANCELADA").length
+          }
+          Max={30}
+          tA={0}
+        />
+        <LinhaEspecialidade
+          e={"Oftalmologista"}
+          tS={oftalmologista.length}
+          p={
+            oftalmologista.filter((s: any) => s.statusFeira === "PENDENTE")
+              .length +
+            oftalmologista.filter((s: any) => s.statusFeira === "AGUARDANDO")
+              .length
+          }
+          C={
+            oftalmologista.filter((s: any) => s.statusFeira === "CONFIRMADA")
+              .length
+          }
+          c={
+            oftalmologista.filter((s: any) => s.statusFeira === "CANCELADA")
+              .length
+          }
+          Max={30}
+          tA={0}
+        />
+        <LinhaEspecialidade
+          e={"Odontologista"}
+          tS={odonto.length}
+          p={
+            odonto.filter((s: any) => s.statusFeira === "PENDENTE").length +
+            odonto.filter((s: any) => s.statusFeira === "AGUARDANDO").length
+          }
+          C={odonto.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
+          c={odonto.filter((s: any) => s.statusFeira === "CANCELADA").length}
+          Max={30}
+          tA={0}
+        />
+        <LinhaEspecialidade
+          e={"USG"}
+          tS={usg.length}
+          p={
+            usg.filter((s: any) => s.statusFeira === "PENDENTE").length +
+            usg.filter((s: any) => s.statusFeira === "AGUARDANDO").length
+          }
+          C={usg.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
+          c={usg.filter((s: any) => s.statusFeira === "CANCELADA").length}
+          Max={30}
+          tA={0}
+        />
+        <LinhaEspecialidade
+          e={"Mamografia"}
+          tS={mamografia.length}
+          p={
+            mamografia.filter((s: any) => s.statusFeira === "PENDENTE").length +
+            mamografia.filter((s: any) => s.statusFeira === "AGUARDANDO").length
+          }
+          C={
+            mamografia.filter((s: any) => s.statusFeira === "CONFIRMADA").length
+          }
+          c={
+            mamografia.filter((s: any) => s.statusFeira === "CANCELADA").length
+          }
+          Max={30}
+          tA={0}
+        />
+        <LinhaEspecialidade
+          e={"ECG"}
+          tS={eletrocardiograma.length}
+          p={
+            eletrocardiograma.filter((s: any) => s.statusFeira === "PENDENTE")
+              .length +
+            eletrocardiograma.filter((s: any) => s.statusFeira === "AGUARDANDO")
+              .length
+          }
+          C={
+            eletrocardiograma.filter((s: any) => s.statusFeira === "CONFIRMADA")
+              .length
+          }
+          c={
+            eletrocardiograma.filter((s: any) => s.statusFeira === "CANCELADA")
+              .length
+          }
+          Max={30}
+          tA={0}
+        />
+      </div>
+      {/* Linhas Por Especialidade FIM */}
+    </div>
+  );
+}
+
+function LinhaEspecialidade({
+  e,
+  tS,
+  p,
+  C,
+  c,
+  Max,
+  tA,
+}: {
+  e: any;
+  tS: any;
+  p: any;
+  C: any;
+  c: any;
+  Max: any;
+  tA: any;
+}) {
+  const porcentagem = (tS / Max) * 100;
+
+  const obterCorDinamica = (porcentagem: any) => {
+    if (porcentagem < 50) return "hsl(120, 80%, 45%)";
+
+    const hue = 120 - (porcentagem - 50) * (120 / 50);
+
+    return `hsl(${hue}, 80%, 45%)`;
+  };
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+        padding: 3,
+        borderBottom: `1px solid #DDD`,
+        justifyContent: "space-between",
+      }}
+    >
+      <p
+        style={{
+          width: "20%",
+          textAlign: "center",
+          backgroundColor: "#EFEFEF60",
+        }}
+      >
+        {e}
+      </p>
+      <p
+        style={{
+          width: "13.3%",
+          textAlign: "center",
+        }}
+      >
+        {tS}
+      </p>
+      <p
+        style={{
+          width: "13.3%",
+          textAlign: "center",
+          backgroundColor: "#EFEFEF60",
+        }}
+      >
+        {p}
+      </p>
+      <p
+        style={{
+          width: "13.3%",
+          textAlign: "center",
+         
+        }}
+      >
+        {c}
+      </p>
+        <p
+          style={{
+            width: "13.3%",
+            textAlign: "center", backgroundColor: "#EFEFEF60",
+          }}
+        >
+          {C}
+        </p>
+      <div
+        style={{
+          width: "16.6%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            height: 15,
+            overflow: "hidden",
+            width: "60%",
+            backgroundColor: "#EEE",
+            borderRadius: 5,
+          }}
+        >
+          <div
+            style={{
+              height: 20,
+              width: `${porcentagem}%`,
+              backgroundColor: obterCorDinamica(porcentagem),
+            }}
+          />
+        </div>
+        <p
+          style={{
+            textAlign: "center",
+          }}
+        >
+          {Max}
+        </p>
+      </div>
+      <p
+        style={{
+          width: "10%",
+          textAlign: "center",
+          backgroundColor: "#EFEFEF60",
+        }}
+      >
+        {tA}
+      </p>
     </div>
   );
 }
@@ -321,7 +1047,7 @@ function Pacientes() {
       }}
     >
       {pacientes && pacientes.length > 0 ? (
-        pacientes.map((p) => <p key={p.id}>{p.nome}</p>)
+        pacientes.map((p: any) => <p key={p.id}>{p.nome}</p>)
       ) : (
         <p>Nenhum paciente cadastrado</p>
       )}
@@ -473,7 +1199,7 @@ function FeiradeSaudeConteudo({ conteudo }: FeiradeSaudeConteudoProps) {
         borderRight: "1px solid #FFFFFF99",
         borderBottom: "1px solid #FFFFFF70",
         boxShadow: "2px 2px 5px #00000020",
-        padding: 5,
+        // padding: 5,
         overflow: "hidden",
       }}
     >
@@ -519,4 +1245,5 @@ function FeiradeSaude() {
     </div>
   );
 }
+
 export default FeiradeSaude;

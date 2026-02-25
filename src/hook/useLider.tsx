@@ -22,12 +22,13 @@ interface LideresData {
 }
 
 export function useLideres() {
-  const { data, loading, error } = useQuery<LideresData>(GET_LIDERES);
+  const { data, loading, error, refetch } = useQuery<LideresData>(GET_LIDERES);
 
   return {
     lideres: data?.lideres,
     loading,
     error,
+    refetch: refetch || Promise.resolve()
   };
 }
 

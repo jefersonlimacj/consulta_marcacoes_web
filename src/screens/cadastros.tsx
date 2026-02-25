@@ -31,7 +31,6 @@ function CadastrosConteudo() {
     refetch: atualizarMedicos,
   } = useMedicos();
 
-  console.log(pacientes, lideres, medicos);
   return (
     <div
       style={{

@@ -60,7 +60,7 @@ export function LinhaMarcacao({
             style={{
               height: 20,
               width: 50,
-              backgroundColor: "yellowgreen",
+              backgroundColor: "#9acd350",
               borderTop: "1px solid #303f0f",
               borderBottom: "1px solid #303f0f",
               display: "flex",
@@ -70,6 +70,7 @@ export function LinhaMarcacao({
               transform: `rotate(-45deg)`,
               top: 0,
               left: -15,
+              backdropFilter: `blur(1.5px)`
             }}
           >
             <p style={{ fontWeight: 700, color: "#303f0f", fontSize: 11 }}>

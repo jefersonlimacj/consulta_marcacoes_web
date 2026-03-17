@@ -1,4 +1,4 @@
-import { Loader2, UserRoundPlus } from "lucide-react";
+import { CircleX, Loader2, UserRoundPlus } from "lucide-react";
 import { useState } from "react";
 import styled from "styled-components";
 import { useCreatePaciente } from "../../hook/usePaciente";
@@ -80,7 +80,7 @@ export function BtnCadastrarPacienteMenor() {
       >
         <div
           style={{
-            width: "30%",
+            width: "70%",
             scale: open ? 1 : 0.5,
             backgroundColor: "#F4F4F4",
             boxShadow: "5px 5px 10px #55555520",
@@ -95,7 +95,23 @@ export function BtnCadastrarPacienteMenor() {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <p>Cadastro de Novos Pacientes</p>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <p>Cadastro de Novos Pacientes</p>
+            <CircleX
+              style={{ cursor: "pointer" }}
+              onClick={() => setOpen(false)}
+              color="red"
+            />
+          </div>
+
           <TextoEntrada
             placeholder="Insira aqui o nome"
             type="text"
@@ -215,8 +231,8 @@ function TextoEntrada({
 }
 
 const BtnCadastrar = styled.div`
- padding: 5px 15px;
-  background-color: #FFFFFF;
+  padding: 5px 15px;
+  background-color: #ffffff;
   border-radius: 14px;
   display: flex;
   flex-direction: row;
@@ -232,9 +248,9 @@ const BtnCadastrar = styled.div`
   &:hover {
     scale: 1.03;
     border-radius: 18px;
-    background-color: #15BB78;
+    background-color: #15bb78;
     box-shadow: 2px 2px 5px #90909010;
-    color: #FFFFFF;
+    color: #ffffff;
   }
 
   &:active {

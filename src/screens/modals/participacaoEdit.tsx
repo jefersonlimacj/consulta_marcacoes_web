@@ -39,6 +39,8 @@ export function ModalParticipacaoEdit({
   const [ultrassom, setUltrassom] = useState<boolean>(false);
   const [eletrocardiograma, setEletrocardiograma] = useState<boolean>(false);
   const [mamografia, setMamografia] = useState<boolean>(false);
+  const [clinico, setClinico] = useState<boolean>(false);
+
   const [espera, setEspera] = useState<boolean>(false);
 
   useEffect(() => {
@@ -54,6 +56,7 @@ export function ModalParticipacaoEdit({
     setUltrassom(p?.usg);
     setEletrocardiograma(p?.eletrocardiograma);
     setMamografia(p?.mamografia);
+    setClinico(p?.clinico);
   }, [open, p?.id]);
 
   const dadosParaEnviar = {
@@ -66,6 +69,7 @@ export function ModalParticipacaoEdit({
     ortopedista: ortopedista,
     urologista: urologista,
     usg: ultrassom,
+    clinico: clinico,
   };
 
   const { editParticipacao } = useEditParticipacao();
@@ -439,6 +443,22 @@ export function ModalParticipacaoEdit({
               >
                 <p>Eletrocardiograma</p>
                 {eletrocardiograma ? (
+                  <SquareCheckBig size={20} />
+                ) : (
+                  <Square size={20} />
+                )}
+              </BtnEspecialidades>
+              <BtnEspecialidades
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setClinico(!clinico)
+                    : undefined
+                }
+                $cor={clinico ? "#15ff89" : "#DDD"}
+                $cor2={clinico ? "#14f776" : "#ccc"}
+              >
+                <p>Clínico</p>
+                {clinico ? (
                   <SquareCheckBig size={20} />
                 ) : (
                   <Square size={20} />

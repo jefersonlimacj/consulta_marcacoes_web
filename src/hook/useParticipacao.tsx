@@ -3,36 +3,37 @@ import { useMutation, useQuery } from "@apollo/client/react";
 
 const GET_PARTICIPACOES = gql`
   query Participacoes {
-    participacoes {
+  participacoes {
+    id
+    paciente {
       id
-      paciente {
-        cpf
-        dataNascimento
-        id
-        nome
-        nSus
-        telefone
-        telefoneS
-      }
-      lider {
-        id
-        nome
-        telefone
-      }
-      statusFeira
-      presenca
-      criadoEm
-      cardiologista
-      ginecologista
-      ortopedista
-      urologista
-      oftalmologista
-      odonto
-      usg
-      mamografia
-      eletrocardiograma
+      nome
+      cpf
+      dataNascimento
+      nSus
+      telefone
+      telefoneS
     }
+    lider {
+      id
+      nome
+      telefone
+    }
+    statusFeira
+    presenca
+    criadoEm
+    cardiologista
+    ginecologista
+    ortopedista
+    urologista
+    oftalmologista
+    odonto
+    usg
+    mamografia
+    eletrocardiograma
+    clinico
   }
+}
 `;
 
 interface ParticipacoesList {
@@ -64,11 +65,13 @@ interface ParticipacoesList {
     usg?: boolean;
     mamografia?: boolean;
     eletrocardiograma?: boolean;
+    clinico?: boolean;
   }>;
 }
 
 export function useParticipacoes() {
-    const { data, loading, error, refetch } = useQuery<ParticipacoesList>(GET_PARTICIPACOES);
+  const { data, loading, error, refetch } =
+    useQuery<ParticipacoesList>(GET_PARTICIPACOES);
   return {
     participacoes: data?.participacoes || [],
     loading,
@@ -107,6 +110,7 @@ const GET_PARTICIPACAO_ID = gql`
       usg
       mamografia
       eletrocardiograma
+      clinico
     }
   }
 `;
@@ -140,6 +144,7 @@ interface ParticipacaoProps {
     usg?: boolean;
     mamografia?: boolean;
     eletrocardiograma?: boolean;
+    clinico?: boolean;
   };
 }
 

@@ -14,6 +14,8 @@ type LinhaParticipacaoProps = {
 };
 
 export function LinhaParticipacao({ onClick, p }: LinhaParticipacaoProps) {
+
+  console.log(p)
   return (
     <div
       onClick={onClick}
@@ -82,6 +84,9 @@ export function LinhaParticipacao({ onClick, p }: LinhaParticipacaoProps) {
         <div style={{ width: "10%" }}>{inforEspecialidade(p?.mamografia)}</div>
         <div style={{ width: "10%" }}>
           {inforEspecialidade(p?.eletrocardiograma)}
+        </div>
+        <div style={{ width: "10%" }}>
+          {inforEspecialidade(p?.clinico)}
         </div>
       </div>
       <div

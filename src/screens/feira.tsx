@@ -928,6 +928,7 @@ function Participacoes() {
           style={{
             width: "10%",
             overflow: "hidden",
+            borderRight: "1px solid #999",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
             flexDirection: "row",
@@ -935,6 +936,18 @@ function Participacoes() {
           }}
         >
           ECG
+        </div>
+        <div
+          style={{
+            width: "10%",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          Clínico
         </div>
       </div>
       <div style={{ width: "5%", paddingLeft: 5 }}>

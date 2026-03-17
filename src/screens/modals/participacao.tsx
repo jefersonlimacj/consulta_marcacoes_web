@@ -16,6 +16,7 @@ import {
   useCreateParticipacao,
   useParticipacoes,
 } from "../../hook/useParticipacao";
+import { BtnCadastrarPacienteMenor } from "./pacienteBtnMenor";
 
 export function BtnNovaParticipacao() {
   const [open, setOpen] = useState<boolean>(false);
@@ -31,6 +32,7 @@ export function BtnNovaParticipacao() {
   const [ultrassom, setUltrassom] = useState<boolean>(false);
   const [eletrocardiograma, setEletrocardiograma] = useState<boolean>(false);
   const [mamografia, setMamografia] = useState<boolean>(false);
+  const [clinico, setClinico] = useState<boolean>(false);
 
   const [espera, setEspera] = useState<boolean>(false);
 
@@ -54,6 +56,7 @@ export function BtnNovaParticipacao() {
     ortopedista: ortopedista,
     urologista: urologista,
     usg: ultrassom,
+    clinico: clinico,
   };
 
   const { createParticipacao } = useCreateParticipacao();
@@ -81,6 +84,7 @@ export function BtnNovaParticipacao() {
       setUltrassom(false);
       setEletrocardiograma(false);
       setMamografia(false);
+      setClinico(false)
 
       return res;
     } catch (e: any) {
@@ -149,6 +153,7 @@ export function BtnNovaParticipacao() {
           setUltrassom(false);
           setEletrocardiograma(false);
           setMamografia(false);
+          setClinico(false)
         }}
       >
         <div
@@ -188,7 +193,6 @@ export function BtnNovaParticipacao() {
                 gap: 5,
               }}
             >
-              {" "}
               <div
                 style={{
                   width: "70%",
@@ -281,7 +285,7 @@ export function BtnNovaParticipacao() {
                 $cor={cardiologista ? "#15ff89" : "#DDD"}
                 $cor2={cardiologista ? "#14f776" : "#ccc"}
               >
-                <p>Cardiolgista</p>{" "}
+                <p>Cardiolgista</p>
                 {cardiologista ? (
                   <SquareCheckBig size={20} />
                 ) : (
@@ -293,7 +297,7 @@ export function BtnNovaParticipacao() {
                 $cor={ginecologista ? "#15ff89" : "#DDD"}
                 $cor2={ginecologista ? "#14f776" : "#ccc"}
               >
-                <p>Ginecologista</p>{" "}
+                <p>Ginecologista</p>
                 {ginecologista ? (
                   <SquareCheckBig size={20} />
                 ) : (
@@ -305,7 +309,7 @@ export function BtnNovaParticipacao() {
                 $cor={ortopedista ? "#15ff89" : "#DDD"}
                 $cor2={ortopedista ? "#14f776" : "#ccc"}
               >
-                <p>Ortopedista</p>{" "}
+                <p>Ortopedista</p>
                 {ortopedista ? (
                   <SquareCheckBig size={20} />
                 ) : (
@@ -317,7 +321,7 @@ export function BtnNovaParticipacao() {
                 $cor={urologista ? "#15ff89" : "#DDD"}
                 $cor2={urologista ? "#14f776" : "#ccc"}
               >
-                <p>Urologista</p>{" "}
+                <p>Urologista</p>
                 {urologista ? (
                   <SquareCheckBig size={20} />
                 ) : (
@@ -329,7 +333,7 @@ export function BtnNovaParticipacao() {
                 $cor={oftalmologista ? "#15ff89" : "#DDD"}
                 $cor2={oftalmologista ? "#14f776" : "#ccc"}
               >
-                <p>Oftalmologista</p>{" "}
+                <p>Oftalmologista</p>
                 {oftalmologista ? (
                   <SquareCheckBig size={20} />
                 ) : (
@@ -341,7 +345,7 @@ export function BtnNovaParticipacao() {
                 $cor={odontologia ? "#15ff89" : "#DDD"}
                 $cor2={odontologia ? "#14f776" : "#ccc"}
               >
-                <p>Odontologia</p>{" "}
+                <p>Odontologia</p>
                 {odontologia ? (
                   <SquareCheckBig size={20} />
                 ) : (
@@ -353,7 +357,7 @@ export function BtnNovaParticipacao() {
                 $cor={ultrassom ? "#15ff89" : "#DDD"}
                 $cor2={ultrassom ? "#14f776" : "#ccc"}
               >
-                <p>Ultrassom</p>{" "}
+                <p>Ultrassom</p>
                 {ultrassom ? (
                   <SquareCheckBig size={20} />
                 ) : (
@@ -365,7 +369,7 @@ export function BtnNovaParticipacao() {
                 $cor={mamografia ? "#15ff89" : "#DDD"}
                 $cor2={mamografia ? "#14f776" : "#ccc"}
               >
-                <p>Mamografia</p>{" "}
+                <p>Mamografia</p>
                 {mamografia ? (
                   <SquareCheckBig size={20} />
                 ) : (
@@ -377,8 +381,20 @@ export function BtnNovaParticipacao() {
                 $cor={eletrocardiograma ? "#15ff89" : "#DDD"}
                 $cor2={eletrocardiograma ? "#14f776" : "#ccc"}
               >
-                <p>Eletrocardiograma</p>{" "}
+                <p>Eletrocardiograma</p>
                 {eletrocardiograma ? (
+                  <SquareCheckBig size={20} />
+                ) : (
+                  <Square size={20} />
+                )}
+              </BtnEspecialidades>
+              <BtnEspecialidades
+                onClick={() => setClinico(!clinico)}
+                $cor={clinico ? "#15ff89" : "#DDD"}
+                $cor2={clinico ? "#14f776" : "#ccc"}
+              >
+                <p>Clínico</p>
+                {clinico ? (
                   <SquareCheckBig size={20} />
                 ) : (
                   <Square size={20} />
@@ -517,18 +533,25 @@ function ModalPacientes({
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            gap: 5,
           }}
         >
           <TextoEntrada
-            largura="90%"
+            largura="60%"
             type="text"
             placeholder="Pesquise o paciente"
             value={nomePaciente}
             onChange={(e) => setNomePaciente(e.target.value)}
           />
+          <BtnCadastrarPacienteMenor />
           <BtnRefresh onClick={() => atualizarPacientes()}>
             <RefreshCcw className={espera ? "animate-spin" : ""} />
           </BtnRefresh>
+          <CircleX
+            style={{ cursor: "pointer" }}
+            onClick={() => setOpen(false)}
+            color="red"
+          />
         </div>
 
         <div

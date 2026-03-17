@@ -70,7 +70,7 @@ export function LinhaMarcacao({
               transform: `rotate(-45deg)`,
               top: 0,
               left: -15,
-              backdropFilter: `blur(1.5px)`
+              backdropFilter: `blur(0.9px)`
             }}
           >
             <p style={{ fontWeight: 700, color: "#303f0f", fontSize: 11 }}>

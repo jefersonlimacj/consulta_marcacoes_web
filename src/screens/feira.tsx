@@ -1,10 +1,9 @@
-import { Loader2, LogOut } from "lucide-react";
+import { Loader2, LogOut, Square, SquareCheckBig } from "lucide-react";
 import { BarChart, ResponsiveContainer } from "recharts";
 import { useState, type JSX } from "react";
 import styled from "styled-components";
 import { BtnNovaParticipacao } from "./modals/participacao";
 import { BtnCadastrarPacienteMenor } from "./modals/pacienteBtnMenor";
-import { usePacientes } from "../hook/usePaciente";
 import { useParticipacoes } from "../hook/useParticipacao";
 import { LinhaParticipacao } from "../components/linhaParticipacao";
 import { ModalParticipacaoEdit } from "./modals/participacaoEdit";
@@ -180,6 +179,7 @@ function LinhaGraficos({ p }: { p: any }) {
   const usg = p.filter((s: any) => s.usg === true);
   const mamografia = p.filter((s: any) => s.mamografia === true);
   const eletrocardiograma = p.filter((s: any) => s.eletrocardiograma === true);
+  const clinico = p.filter((s: any) => s.clinico === true);
 
   const dataEspecialidades = [
     { name: "Cardiologista", value: cardiologista.length, fill: "#8efa55" }, // Amarelo
@@ -191,6 +191,7 @@ function LinhaGraficos({ p }: { p: any }) {
     { name: "USG", value: usg.length, fill: "#8efa55" }, // Verde
     { name: "Mamografia", value: mamografia.length, fill: "#8efa55" }, // Vermelho
     { name: "ECG", value: eletrocardiograma.length, fill: "#8efa55" }, // Vermelho
+    { name: "Clínico", value: clinico.length, fill: "#8efa55" }, // Vermelho
   ].sort((a, b) => b.value - a.value);
 
   const customTicks = Array.from({ length: 21 }, (_, i) => i * 5);
@@ -215,7 +216,6 @@ function LinhaGraficos({ p }: { p: any }) {
         <p style={{ fontWeight: "bold", color: "#333" }}>
           Status de Confirmação
         </p>
-
         <PieChart
           style={{
             width: "100%",
@@ -372,6 +372,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
   const usg = p.filter((s: any) => s.usg === true);
   const mamografia = p.filter((s: any) => s.mamografia === true);
   const eletrocardiograma = p.filter((s: any) => s.eletrocardiograma === true);
+  const clinico = p.filter((s: any) => s.clinico === true);
 
   return (
     <div
@@ -483,7 +484,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
             cardiologista.filter((s: any) => s.statusFeira === "CANCELADA")
               .length
           }
-          Max={30}
+          Max={70}
           tA={0}
         />
         <LinhaEspecialidade
@@ -503,7 +504,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
             ginecologista.filter((s: any) => s.statusFeira === "CANCELADA")
               .length
           }
-          Max={30}
+          Max={70}
           tA={0}
         />
         <LinhaEspecialidade
@@ -522,7 +523,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           c={
             ortopedista.filter((s: any) => s.statusFeira === "CANCELADA").length
           }
-          Max={30}
+          Max={70}
           tA={0}
         />
         <LinhaEspecialidade
@@ -538,7 +539,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           c={
             urologista.filter((s: any) => s.statusFeira === "CANCELADA").length
           }
-          Max={30}
+          Max={70}
           tA={0}
         />
         <LinhaEspecialidade
@@ -558,7 +559,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
             oftalmologista.filter((s: any) => s.statusFeira === "CANCELADA")
               .length
           }
-          Max={30}
+          Max={70}
           tA={0}
         />
         <LinhaEspecialidade
@@ -570,7 +571,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           }
           C={odonto.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
           c={odonto.filter((s: any) => s.statusFeira === "CANCELADA").length}
-          Max={30}
+          Max={40}
           tA={0}
         />
         <LinhaEspecialidade
@@ -582,7 +583,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           }
           C={usg.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
           c={usg.filter((s: any) => s.statusFeira === "CANCELADA").length}
-          Max={30}
+          Max={100}
           tA={0}
         />
         <LinhaEspecialidade
@@ -598,7 +599,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           c={
             mamografia.filter((s: any) => s.statusFeira === "CANCELADA").length
           }
-          Max={30}
+          Max={70}
           tA={0}
         />
         <LinhaEspecialidade
@@ -618,7 +619,19 @@ function DetalhesEspecialidades({ p }: { p: any }) {
             eletrocardiograma.filter((s: any) => s.statusFeira === "CANCELADA")
               .length
           }
-          Max={30}
+          Max={80}
+          tA={0}
+        />
+        <LinhaEspecialidade
+          e={"Clínico"}
+          tS={clinico.length}
+          p={
+            clinico.filter((s: any) => s.statusFeira === "PENDENTE").length +
+            clinico.filter((s: any) => s.statusFeira === "AGUARDANDO").length
+          }
+          C={clinico.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
+          c={clinico.filter((s: any) => s.statusFeira === "CANCELADA").length}
+          Max={80}
           tA={0}
         />
       </div>
@@ -1052,7 +1065,16 @@ function Participacoes() {
 }
 
 function Pacientes() {
-  const { pacientes } = usePacientes();
+  const { participacoes } = useParticipacoes();
+  const [pacienteSelecionado, setPacienteSelecionado] = useState<any>();
+  const listaOrdenada = participacoes
+    ? [...participacoes].sort((a, b) =>
+        (a?.paciente?.nome ?? "").localeCompare(
+          b?.paciente?.nome ?? "",
+          "pt-BR",
+        ),
+      )
+    : [];
   return (
     <div
       style={{
@@ -1060,15 +1082,323 @@ function Pacientes() {
         display: "flex",
         flexDirection: "column",
         overflow: "auto",
+        padding: 10,
+        gap: 10,
       }}
     >
-      {pacientes && pacientes.length > 0 ? (
-        pacientes.map((p: any) => <p key={p.id}>{p.nome}</p>)
-      ) : (
-        <p>Nenhum paciente cadastrado</p>
-      )}
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          gap: 20,
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+      >
+        <p>Paciente:</p>
+        <div
+          style={{
+            width: "50%",
+            padding: 10,
+            backgroundColor: "#FFFFFF90",
+            display: "flex",
+            borderRadius: 14,
+          }}
+        >
+          <select
+            style={{ width: "100%", outline: "none", border: "none" }}
+            name=""
+            id=""
+            onChange={(e) => {
+              const valor = e.target.value;
+              setPacienteSelecionado(valor ? JSON.parse(valor) : undefined);
+            }}
+          >
+            <option value="">Selecione um paciente</option>
+            {listaOrdenada?.map((p: any) => (
+              <option value={JSON.stringify(p)} key={p.id}>
+                {p.paciente.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          padding: 10,
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: "#F4F4F4",
+          borderRadius: 14,
+          overflow: "hidden",
+          gap: 10,
+        }}
+      >
+        <p>Participações do Paciente</p>
+        <div
+          style={{ width: "100%", height: 1, backgroundColor: "#55555550" }}
+        />
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            gap: 20,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            fontSize: 14,
+          }}
+        >
+          <p
+            style={{
+              width: "22%",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Nome: <strong>{pacienteSelecionado?.paciente.nome || "-"}</strong>
+          </p>
+          <p>
+            Nº SUS:{" "}
+            <strong>
+              {formatarNumeroSus(pacienteSelecionado?.paciente.nSus) ||
+                "000000000000000"}
+            </strong>
+          </p>
+          <p>
+            CPF:{" "}
+            <strong>
+              {formatarCPF(pacienteSelecionado?.paciente.cpf) || "-"}
+            </strong>
+          </p>
+          <p>
+            Data de Nasc.:{" "}
+            <strong>
+              {formatarData(pacienteSelecionado?.paciente.dataNascimento) ||
+                "-"}
+            </strong>
+          </p>
+          <p>
+            Tel.:{" "}
+            <strong>
+              {formatarTelefone(pacienteSelecionado?.paciente.telefone) || "-"}
+            </strong>
+          </p>
+          <p>
+            Tel.:{" "}
+            <strong>
+              {formatarTelefone(pacienteSelecionado?.paciente.telefoneS) || "-"}
+            </strong>
+          </p>
+        </div>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          padding: 10,
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: "#F4F4F4",
+          borderRadius: 14,
+          overflow: "hidden",
+          gap: 10,
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <p style={{ width: "8%", textAlign: "center" }}>Cardiologista</p>
+          <p style={{ width: "8%", textAlign: "center" }}>Ginecologista</p>
+          <p style={{ width: "8%", textAlign: "center" }}>Ortopedista</p>
+          <p style={{ width: "8%", textAlign: "center" }}>Urologista</p>
+          <p style={{ width: "8%", textAlign: "center" }}>Oftalmo</p>
+          <p style={{ width: "8%", textAlign: "center" }}>Odonto</p>
+          <p style={{ width: "8%", textAlign: "center" }}>USG</p>
+          <p style={{ width: "8%", textAlign: "center" }}>Mamografia</p>
+          <p style={{ width: "8%", textAlign: "center" }}>ECG</p>
+          <p style={{ width: "8%", textAlign: "center" }}>Clínico</p>
+        </div>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <BtnEspecialidades
+            $cor={pacienteSelecionado?.cardiologista ? "#15ff89" : "#DDD"}
+            $cor2={pacienteSelecionado?.cardiologista ? "#14f776" : "#ccc"}
+          >
+            {pacienteSelecionado?.cardiologista ? (
+              <SquareCheckBig size={20} />
+            ) : (
+              <Square size={20} />
+            )}
+          </BtnEspecialidades>
+          <BtnEspecialidades
+            $cor={pacienteSelecionado?.ginecologista ? "#15ff89" : "#DDD"}
+            $cor2={pacienteSelecionado?.ginecologista ? "#14f776" : "#ccc"}
+          >
+            {pacienteSelecionado?.ginecologista ? (
+              <SquareCheckBig size={20} />
+            ) : (
+              <Square size={20} />
+            )}
+          </BtnEspecialidades>
+          <BtnEspecialidades
+            $cor={pacienteSelecionado?.ortopedista ? "#15ff89" : "#DDD"}
+            $cor2={pacienteSelecionado?.ortopedista ? "#14f776" : "#ccc"}
+          >
+            {pacienteSelecionado?.ortopedista ? (
+              <SquareCheckBig size={20} />
+            ) : (
+              <Square size={20} />
+            )}
+          </BtnEspecialidades>
+          <BtnEspecialidades
+            $cor={pacienteSelecionado?.urologista ? "#15ff89" : "#DDD"}
+            $cor2={pacienteSelecionado?.urologista ? "#14f776" : "#ccc"}
+          >
+            {pacienteSelecionado?.urologista ? (
+              <SquareCheckBig size={20} />
+            ) : (
+              <Square size={20} />
+            )}
+          </BtnEspecialidades>
+          <BtnEspecialidades
+            $cor={pacienteSelecionado?.oftalmologista ? "#15ff89" : "#DDD"}
+            $cor2={pacienteSelecionado?.oftalmologista ? "#14f776" : "#ccc"}
+          >
+            {pacienteSelecionado?.oftalmologista ? (
+              <SquareCheckBig size={20} />
+            ) : (
+              <Square size={20} />
+            )}
+          </BtnEspecialidades>
+          <BtnEspecialidades
+            $cor={pacienteSelecionado?.odonto ? "#15ff89" : "#DDD"}
+            $cor2={pacienteSelecionado?.odonto ? "#14f776" : "#ccc"}
+          >
+            {pacienteSelecionado?.odonto ? (
+              <SquareCheckBig size={20} />
+            ) : (
+              <Square size={20} />
+            )}
+          </BtnEspecialidades>
+          <BtnEspecialidades
+            $cor={pacienteSelecionado?.usg ? "#15ff89" : "#DDD"}
+            $cor2={pacienteSelecionado?.usg ? "#14f776" : "#ccc"}
+          >
+            {pacienteSelecionado?.usg ? (
+              <SquareCheckBig size={20} />
+            ) : (
+              <Square size={20} />
+            )}
+          </BtnEspecialidades>
+          <BtnEspecialidades
+            $cor={pacienteSelecionado?.mamografia ? "#15ff89" : "#DDD"}
+            $cor2={pacienteSelecionado?.mamografia ? "#14f776" : "#ccc"}
+          >
+            {pacienteSelecionado?.mamografia ? (
+              <SquareCheckBig size={20} />
+            ) : (
+              <Square size={20} />
+            )}
+          </BtnEspecialidades>
+          <BtnEspecialidades
+            $cor={pacienteSelecionado?.ecg ? "#15ff89" : "#DDD"}
+            $cor2={pacienteSelecionado?.ecg ? "#14f776" : "#ccc"}
+          >
+            {pacienteSelecionado?.ecg ? (
+              <SquareCheckBig size={20} />
+            ) : (
+              <Square size={20} />
+            )}
+          </BtnEspecialidades>
+          <BtnEspecialidades
+            $cor={pacienteSelecionado?.clinico ? "#15ff89" : "#DDD"}
+            $cor2={pacienteSelecionado?.clinico ? "#14f776" : "#ccc"}
+          >
+            {pacienteSelecionado?.clinico ? (
+              <SquareCheckBig size={20} />
+            ) : (
+              <Square size={20} />
+            )}
+          </BtnEspecialidades>
+        </div>
+      </div>
     </div>
   );
+}
+
+interface BtnEspecialidadesProps {
+  $cor: string;
+  $cor2?: string;
+}
+
+const BtnEspecialidades = styled.div<BtnEspecialidadesProps>`
+  width: 8%;
+  height: 40px;
+  background-color: ${(props) => props.$cor || "#DDD"};
+  padding: 5px 10px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all ease-in-out 0.2s;
+
+  &:hover {
+    background-color: ${(props) => props.$cor2 || "#ccc"};
+    box-shadow: 2px 2px 5px #55555520;
+    scale: 1.02;
+  }
+
+  &:active {
+    background-color: ${(props) => props.$cor2 + "90" || "#ccc90"};
+  }
+`;
+
+function formatarNumeroSus(valor: string) {
+  if (!valor) return "-";
+  const apenasNumeros = valor.replace(/\D/g, "");
+  return apenasNumeros.replace(/(\d{3})(\d{4})(\d{4})(\d{4})/, "$1 $2 $3 $4");
+}
+
+function formatarCPF(cpf: string) {
+  if (!cpf) return "-";
+  const apenasNumeros = cpf.replace(/\D/g, "");
+  return apenasNumeros.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+}
+
+function formatarData(dataISO: string) {
+  if (!dataISO) return "-";
+  const data = new Date(dataISO);
+  return data.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+}
+
+function formatarTelefone(telefone: string) {
+  if (!telefone) return "-";
+  const apenasNumeros = telefone.replace(/\D/g, "");
+  if (apenasNumeros.length === 11) {
+    return apenasNumeros.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "$1 $2 $3-$4");
+  }
+  if (apenasNumeros.length === 10) {
+    return apenasNumeros.replace(/(\d{2})(\d{4})(\d{4})/, "$1 $2-$3");
+  }
+  return apenasNumeros;
 }
 
 interface BtnMenuProps {

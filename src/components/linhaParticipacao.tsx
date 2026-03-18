@@ -15,7 +15,6 @@ type LinhaParticipacaoProps = {
 
 export function LinhaParticipacao({ onClick, p }: LinhaParticipacaoProps) {
 
-  console.log(p)
   return (
     <div
       onClick={onClick}

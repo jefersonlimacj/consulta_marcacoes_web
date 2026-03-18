@@ -151,7 +151,7 @@ export function ModalParticipacaoEdit({
           onClick={(e) => e.stopPropagation()}
         >
           <p>
-            Registro de participação do paciente{" "}
+            Participação do paciente:{" "}
             <strong>{p?.paciente?.nome || "Aguarde..."}</strong> | Registrado
             em:{" "}
             <a style={{ fontSize: 16, fontWeight: 500 }}>

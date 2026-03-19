@@ -8,7 +8,7 @@ import {
   Square,
   SquareCheckBig,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { usePacientes } from "../../hook/usePaciente";
 import { useLideres } from "../../hook/useLider";
@@ -84,7 +84,7 @@ export function BtnNovaParticipacao() {
       setUltrassom(false);
       setEletrocardiograma(false);
       setMamografia(false);
-      setClinico(false)
+      setClinico(false);
 
       return res;
     } catch (e: any) {
@@ -153,7 +153,7 @@ export function BtnNovaParticipacao() {
           setUltrassom(false);
           setEletrocardiograma(false);
           setMamografia(false);
-          setClinico(false)
+          setClinico(false);
         }}
       >
         <div
@@ -394,11 +394,7 @@ export function BtnNovaParticipacao() {
                 $cor2={clinico ? "#14f776" : "#ccc"}
               >
                 <p>Clínico</p>
-                {clinico ? (
-                  <SquareCheckBig size={20} />
-                ) : (
-                  <Square size={20} />
-                )}
+                {clinico ? <SquareCheckBig size={20} /> : <Square size={20} />}
               </BtnEspecialidades>
             </div>
           </div>
@@ -495,6 +491,17 @@ function ModalPacientes({
 
   const [nomePaciente, setNomePaciente] = useState<string>("");
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [open]);
+
   return (
     <>
       <BtnAdd
@@ -542,6 +549,7 @@ function ModalPacientes({
             placeholder="Pesquise o paciente"
             value={nomePaciente}
             onChange={(e) => setNomePaciente(e.target.value)}
+            inputRef={inputRef}
           />
           <BtnCadastrarPacienteMenor />
           <BtnRefresh onClick={() => atualizarPacientes()}>
@@ -665,6 +673,17 @@ function ModalLideres({
 
   const [nomeLider, setNomeLider] = useState<string>("");
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [open]);
+
   return (
     <>
       <BtnAdd
@@ -702,6 +721,7 @@ function ModalLideres({
           placeholder="Pesquise o Lider"
           value={nomeLider}
           onChange={(e) => setNomeLider(e.target.value)}
+          inputRef={inputRef}
         />
         <div
           style={{
@@ -796,12 +816,14 @@ function TextoEntrada({
   value,
   type,
   largura,
+  inputRef,
 }: {
   placeholder: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
   type: string;
   largura: string;
+  inputRef?: any;
 }) {
   return (
     <div
@@ -816,6 +838,7 @@ function TextoEntrada({
       }}
     >
       <input
+        ref={inputRef}
         type={type}
         placeholder={placeholder}
         onChange={onChange}

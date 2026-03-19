@@ -61,18 +61,18 @@ export function BtnNovaParticipacao() {
     clinico: clinico,
     preventivo: preventivo,
     raiox: raiox,
-    cardiologistaP: null,
-    odontoP: null,
-    mamografiaP: null,
-    ginecologistaP: null,
-    eletrocardiogramaP: null,
-    oftalmologistaP: null,
-    ortopedistaP: null,
-    urologistaP: null,
-    usgP: null,
-    clinicoP: null,
-    preventivoP: null,
-    raioxP: null,
+    cardiologistaP: false,
+    odontoP: false,
+    mamografiaP: false,
+    ginecologistaP: false,
+    eletrocardiogramaP: false,
+    oftalmologistaP: false,
+    ortopedistaP: false,
+    urologistaP: false,
+    usgP: false,
+    clinicoP: false,
+    preventivoP: false,
+    raioxP: false,
   };
 
   const { createParticipacao } = useCreateParticipacao();
@@ -123,6 +123,7 @@ export function BtnNovaParticipacao() {
         return;
       }
 
+      console.log("Erro ao criar participação: " + msg);
       alert("Erro ao criar participação: " + msg);
     } finally {
       setEspera(false);

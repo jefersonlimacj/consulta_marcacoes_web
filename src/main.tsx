@@ -6,8 +6,8 @@ import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 
 const httpLink = new HttpLink({
-  // uri: "http://localhost:4000/graphql",  
-  uri: "https://rsmaissaude-api.vercel.app/graphql",
+  uri: "http://localhost:4000/graphql",  
+  // uri: "https://rsmaissaude-api.vercel.app/graphql",
   credentials: "include",
 });
 

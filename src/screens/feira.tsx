@@ -373,6 +373,8 @@ function DetalhesEspecialidades({ p }: { p: any }) {
   const mamografia = p.filter((s: any) => s.mamografia === true);
   const eletrocardiograma = p.filter((s: any) => s.eletrocardiograma === true);
   const clinico = p.filter((s: any) => s.clinico === true);
+  const preventivo = p.filter((s: any) => s.preventivo === true);
+  const raiox = p.filter((s: any) => s.raiox === true);
 
   const totalSolicitacoes =
     cardiologista.length +
@@ -384,7 +386,9 @@ function DetalhesEspecialidades({ p }: { p: any }) {
     usg.length +
     mamografia.length +
     eletrocardiograma.length +
-    clinico.length;
+    clinico.length +
+    preventivo.length +
+    raiox.length;
 
   const pendentes =
     cardiologista.filter((s: any) => s.statusFeira === "PENDENTE").length +
@@ -397,7 +401,9 @@ function DetalhesEspecialidades({ p }: { p: any }) {
     mamografia.filter((s: any) => s.statusFeira === "PENDENTE").length +
     eletrocardiograma.filter((s: any) => s.statusFeira === "PENDENTE").length +
     clinico.filter((s: any) => s.statusFeira === "PENDENTE").length +
-    cardiologista.filter((s: any) => s.statusFeira === "AGUARDANDO").length +
+    preventivo.filter((s: any) => s.statusFeira === "PENDENTE").length +
+    raiox.filter((s: any) => s.statusFeira === "PENDENTE").length;
+  +cardiologista.filter((s: any) => s.statusFeira === "AGUARDANDO").length +
     ginecologista.filter((s: any) => s.statusFeira === "AGUARDANDO").length +
     ortopedista.filter((s: any) => s.statusFeira === "AGUARDANDO").length +
     urologista.filter((s: any) => s.statusFeira === "AGUARDANDO").length +
@@ -407,8 +413,9 @@ function DetalhesEspecialidades({ p }: { p: any }) {
     mamografia.filter((s: any) => s.statusFeira === "AGUARDANDO").length +
     eletrocardiograma.filter((s: any) => s.statusFeira === "AGUARDANDO")
       .length +
-    clinico.filter((s: any) => s.statusFeira === "AGUARDANDO").length;
-
+    clinico.filter((s: any) => s.statusFeira === "AGUARDANDO").length +
+    preventivo.filter((s: any) => s.statusFeira === "AGUARDANDO").length +
+    raiox.filter((s: any) => s.statusFeira === "AGUARDANDO").length;
   const confirmados =
     cardiologista.filter((s: any) => s.statusFeira === "CONFIRMADA").length +
     ginecologista.filter((s: any) => s.statusFeira === "CONFIRMADA").length +
@@ -418,8 +425,11 @@ function DetalhesEspecialidades({ p }: { p: any }) {
     odonto.filter((s: any) => s.statusFeira === "CONFIRMADA").length +
     usg.filter((s: any) => s.statusFeira === "CONFIRMADA").length +
     mamografia.filter((s: any) => s.statusFeira === "CONFIRMADA").length +
-    eletrocardiograma.filter((s: any) => s.statusFeira === "CONFIRMADA").length +
-    clinico.filter((s: any) => s.statusFeira === "CONFIRMADA").length;
+    eletrocardiograma.filter((s: any) => s.statusFeira === "CONFIRMADA")
+      .length +
+    clinico.filter((s: any) => s.statusFeira === "CONFIRMADA").length +
+    preventivo.filter((s: any) => s.statusFeira === "CONFIRMADA").length +
+    raiox.filter((s: any) => s.statusFeira === "CONFIRMADA").length;
 
   const cancelados =
     cardiologista.filter((s: any) => s.statusFeira === "CANCELADA").length +
@@ -431,9 +441,9 @@ function DetalhesEspecialidades({ p }: { p: any }) {
     usg.filter((s: any) => s.statusFeira === "CANCELADA").length +
     mamografia.filter((s: any) => s.statusFeira === "CANCELADA").length +
     eletrocardiograma.filter((s: any) => s.statusFeira === "CANCELADA").length +
-    clinico.filter((s: any) => s.statusFeira === "CANCELADA").length;
-
-  console.log(totalSolicitacoes);
+    clinico.filter((s: any) => s.statusFeira === "CANCELADA").length +
+    preventivo.filter((s: any) => s.statusFeira === "CANCELADA").length +
+    raiox.filter((s: any) => s.statusFeira === "CANCELADA").length;
 
   return (
     <div
@@ -457,7 +467,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           width: "100%",
           backgroundColor: "#55DDff",
           justifyContent: "space-between",
-          borderRadius: 6
+          borderRadius: 6,
         }}
       >
         <p
@@ -696,14 +706,45 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           Max={80}
           tA={0}
         />
-        <div style={{ width: "100%", height: 3, backgroundColor: "#558811", borderRadius: 3 }} />
+        <LinhaEspecialidade
+          e={"Preventivo"}
+          tS={preventivo.length}
+          p={
+            preventivo.filter((s: any) => s.statusFeira === "PENDENTE").length +
+            preventivo.filter((s: any) => s.statusFeira === "AGUARDANDO").length
+          }
+          C={preventivo.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
+          c={preventivo.filter((s: any) => s.statusFeira === "CANCELADA").length}
+          Max={80}
+          tA={0}
+        />
+        <LinhaEspecialidade
+          e={"Raio - X"}
+          tS={raiox.length}
+          p={
+            raiox.filter((s: any) => s.statusFeira === "PENDENTE").length +
+            raiox.filter((s: any) => s.statusFeira === "AGUARDANDO").length
+          }
+          C={raiox.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
+          c={raiox.filter((s: any) => s.statusFeira === "CANCELADA").length}
+          Max={80}
+          tA={0}
+        />
+        <div
+          style={{
+            width: "100%",
+            height: 3,
+            backgroundColor: "#558811",
+            borderRadius: 3,
+          }}
+        />
         <LinhaEspecialidade
           e={"Total Atendimentos"}
           tS={totalSolicitacoes}
           p={pendentes}
           C={confirmados}
           c={cancelados}
-          Max={720}
+          Max={880}
           tA={0}
         />
       </div>
@@ -1049,7 +1090,7 @@ function Participacoes() {
             alignItems: "center",
           }}
         >
-          Raio - X 
+          Raio - X
         </div>
       </div>
       <div style={{ width: "5%", paddingLeft: 5 }}>

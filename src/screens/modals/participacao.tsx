@@ -33,6 +33,8 @@ export function BtnNovaParticipacao() {
   const [eletrocardiograma, setEletrocardiograma] = useState<boolean>(false);
   const [mamografia, setMamografia] = useState<boolean>(false);
   const [clinico, setClinico] = useState<boolean>(false);
+  const [preventivo, setPreventivo] = useState<boolean>(false);
+  const [raiox, setRaiox] = useState<boolean>(false);
 
   const [espera, setEspera] = useState<boolean>(false);
 
@@ -57,6 +59,8 @@ export function BtnNovaParticipacao() {
     urologista: urologista,
     usg: ultrassom,
     clinico: clinico,
+    preventivo: preventivo,
+    raiox: raiox,
   };
 
   const { createParticipacao } = useCreateParticipacao();
@@ -85,6 +89,8 @@ export function BtnNovaParticipacao() {
       setEletrocardiograma(false);
       setMamografia(false);
       setClinico(false);
+      setPreventivo(false);
+      setRaiox(false);
 
       return res;
     } catch (e: any) {
@@ -154,6 +160,8 @@ export function BtnNovaParticipacao() {
           setEletrocardiograma(false);
           setMamografia(false);
           setClinico(false);
+          setPreventivo(false);
+          setRaiox(false);
         }}
       >
         <div
@@ -395,6 +403,26 @@ export function BtnNovaParticipacao() {
               >
                 <p>Clínico</p>
                 {clinico ? <SquareCheckBig size={20} /> : <Square size={20} />}
+              </BtnEspecialidades>
+              <BtnEspecialidades
+                onClick={() => setPreventivo(!preventivo)}
+                $cor={preventivo ? "#15ff89" : "#DDD"}
+                $cor2={preventivo ? "#14f776" : "#ccc"}
+              >
+                <p>Preventivo</p>
+                {preventivo ? (
+                  <SquareCheckBig size={20} />
+                ) : (
+                  <Square size={20} />
+                )}
+              </BtnEspecialidades>
+              <BtnEspecialidades
+                onClick={() => setRaiox(!raiox)}
+                $cor={raiox ? "#15ff89" : "#DDD"}
+                $cor2={raiox ? "#14f776" : "#ccc"}
+              >
+                <p>Raio - X</p>
+                {raiox ? <SquareCheckBig size={20} /> : <Square size={20} />}
               </BtnEspecialidades>
             </div>
           </div>

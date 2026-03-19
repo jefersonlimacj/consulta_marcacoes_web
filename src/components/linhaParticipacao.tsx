@@ -14,7 +14,6 @@ type LinhaParticipacaoProps = {
 };
 
 export function LinhaParticipacao({ onClick, p }: LinhaParticipacaoProps) {
-
   return (
     <div
       onClick={onClick}
@@ -41,26 +40,27 @@ export function LinhaParticipacao({ onClick, p }: LinhaParticipacaoProps) {
           whiteSpace: "nowrap",
         }}
       >
-        <p  style={{
-          width: "100%",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-        }}>{p?.paciente?.nome}</p>
+        <p
+          style={{
+            width: "100%",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {p?.paciente?.nome}
+        </p>
       </div>
       <div style={{ width: "10%", paddingLeft: 10 }}>
-        <p style={{fontSize: 13, fontWeight:500}}>
+        <p style={{ fontSize: 13, fontWeight: 500 }}>
           {p?.paciente?.telefone
             ? formatarTelefone(p?.paciente?.telefone)
             : "Sem telefone"}
         </p>
       </div>
-      <div style={{ width: "10%" }}>
-        <p>{p?.lider?.nome}</p>
-      </div>
       <div
         style={{
-          width: "55%",
+          width: "65%",
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
@@ -84,9 +84,9 @@ export function LinhaParticipacao({ onClick, p }: LinhaParticipacaoProps) {
         <div style={{ width: "10%" }}>
           {inforEspecialidade(p?.eletrocardiograma)}
         </div>
-        <div style={{ width: "10%" }}>
-          {inforEspecialidade(p?.clinico)}
-        </div>
+        <div style={{ width: "10%" }}>{inforEspecialidade(p?.clinico)}</div>
+        <div style={{ width: "10%" }}>{inforEspecialidade(p?.preventivo)}</div>
+        <div style={{ width: "10%" }}>{inforEspecialidade(p?.raiox)}</div>
       </div>
       <div
         style={{

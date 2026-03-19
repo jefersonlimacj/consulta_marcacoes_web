@@ -879,16 +879,7 @@ function Participacoes() {
       </div>
       <div
         style={{
-          width: "10%",
-          borderRight: "1px solid #999",
-          paddingLeft: 5,
-        }}
-      >
-        <p>Líder</p>
-      </div>
-      <div
-        style={{
-          width: "55%",
+          width: "65%",
           borderRight: "1px solid #999",
           paddingLeft: 3,
           display: "flex",
@@ -899,7 +890,7 @@ function Participacoes() {
       >
         <div
           style={{
-            width: "10%",
+            width: "8.3%",
             borderRight: "1px solid #999",
             paddingLeft: 3,
             overflow: "hidden",
@@ -913,7 +904,7 @@ function Participacoes() {
         </div>
         <div
           style={{
-            width: "10%",
+            width: "8.3%",
             borderRight: "1px solid #999",
             paddingLeft: 3,
             overflow: "hidden",
@@ -927,7 +918,7 @@ function Participacoes() {
         </div>
         <div
           style={{
-            width: "10%",
+            width: "8.3%",
             borderRight: "1px solid #999",
             paddingLeft: 3,
             overflow: "hidden",
@@ -941,7 +932,7 @@ function Participacoes() {
         </div>
         <div
           style={{
-            width: "10%",
+            width: "8.3%",
             borderRight: "1px solid #999",
             paddingLeft: 3,
             overflow: "hidden",
@@ -955,7 +946,7 @@ function Participacoes() {
         </div>
         <div
           style={{
-            width: "10%",
+            width: "8.3%",
             borderRight: "1px solid #999",
             paddingLeft: 3,
             overflow: "hidden",
@@ -969,7 +960,7 @@ function Participacoes() {
         </div>
         <div
           style={{
-            width: "10%",
+            width: "8.3%",
             borderRight: "1px solid #999",
             paddingLeft: 3,
             overflow: "hidden",
@@ -983,7 +974,7 @@ function Participacoes() {
         </div>
         <div
           style={{
-            width: "10%",
+            width: "8.3%",
             borderRight: "1px solid #999",
             paddingLeft: 3,
             overflow: "hidden",
@@ -997,7 +988,7 @@ function Participacoes() {
         </div>
         <div
           style={{
-            width: "10%",
+            width: "8.3%",
             borderRight: "1px solid #999",
             paddingLeft: 3,
             overflow: "hidden",
@@ -1011,7 +1002,7 @@ function Participacoes() {
         </div>
         <div
           style={{
-            width: "10%",
+            width: "8.3%",
             overflow: "hidden",
             borderRight: "1px solid #999",
             textOverflow: "ellipsis",
@@ -1024,8 +1015,9 @@ function Participacoes() {
         </div>
         <div
           style={{
-            width: "10%",
+            width: "8.3%",
             overflow: "hidden",
+            borderRight: "1px solid #999",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
             flexDirection: "row",
@@ -1033,6 +1025,31 @@ function Participacoes() {
           }}
         >
           Clínico
+        </div>
+        <div
+          style={{
+            width: "8.3%",
+            overflow: "hidden",
+            borderRight: "1px solid #999",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          Preventivo
+        </div>
+        <div
+          style={{
+            width: "8.3%",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          Raio - X 
         </div>
       </div>
       <div style={{ width: "5%", paddingLeft: 5 }}>

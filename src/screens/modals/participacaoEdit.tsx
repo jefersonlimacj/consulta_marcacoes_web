@@ -40,6 +40,8 @@ export function ModalParticipacaoEdit({
   const [eletrocardiograma, setEletrocardiograma] = useState<boolean>(false);
   const [mamografia, setMamografia] = useState<boolean>(false);
   const [clinico, setClinico] = useState<boolean>(false);
+   const [preventivo, setPreventivo] = useState<boolean>(false);
+  const [raiox, setRaiox] = useState<boolean>(false);
 
   const [espera, setEspera] = useState<boolean>(false);
 
@@ -57,6 +59,8 @@ export function ModalParticipacaoEdit({
     setEletrocardiograma(p?.eletrocardiograma);
     setMamografia(p?.mamografia);
     setClinico(p?.clinico);
+    setPreventivo(p?.preventivo);
+    setRaiox(p?.raiox);
   }, [open, p?.id]);
 
   const dadosParaEnviar = {
@@ -70,6 +74,8 @@ export function ModalParticipacaoEdit({
     urologista: urologista,
     usg: ultrassom,
     clinico: clinico,
+    preventivo: preventivo,
+    raiox: raiox,
   };
 
   const { editParticipacao } = useEditParticipacao();
@@ -459,6 +465,38 @@ export function ModalParticipacaoEdit({
               >
                 <p>Clínico</p>
                 {clinico ? (
+                  <SquareCheckBig size={20} />
+                ) : (
+                  <Square size={20} />
+                )}
+              </BtnEspecialidades>
+              <BtnEspecialidades
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setPreventivo(!preventivo)
+                    : undefined
+                }
+                $cor={preventivo ? "#15ff89" : "#DDD"}
+                $cor2={preventivo ? "#14f776" : "#ccc"}
+              >
+                <p>Preventivo</p>
+                {preventivo ? (
+                  <SquareCheckBig size={20} />
+                ) : (
+                  <Square size={20} />
+                )}
+              </BtnEspecialidades>
+              <BtnEspecialidades
+                onClick={
+                  usuario?.regra === "admin"
+                    ? () => setRaiox(!raiox)
+                    : undefined
+                }
+                $cor={raiox ? "#15ff89" : "#DDD"}
+                $cor2={raiox ? "#14f776" : "#ccc"}
+              >
+                <p>Raio - X</p>
+                {raiox ? (
                   <SquareCheckBig size={20} />
                 ) : (
                   <Square size={20} />

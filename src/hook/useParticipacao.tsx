@@ -2,50 +2,52 @@ import { gql } from "@apollo/client";
 import { useMutation, useQuery } from "@apollo/client/react";
 
 const GET_PARTICIPACOES = gql`
- query Participacoes {
-  participacoes {
-    id
-    paciente {
+  query Participacoes {
+    participacoes {
       id
-      nome
-      cpf
-      dataNascimento
-      nSus
-      telefone
-      telefoneS
+      paciente {
+        id
+        nome
+        cpf
+        dataNascimento
+        nSus
+        telefone
+        telefoneS
+      }
+      lider {
+        id
+        nome
+        telefone
+      }
+      statusFeira
+      presenca
+      criadoEm
+      cardiologista
+      cardiologistaP
+      ginecologista
+      ginecologistaP
+      ortopedista
+      ortopedistaP
+      urologista
+      urologistaP
+      oftalmologista
+      oftalmologistaP
+      odonto
+      odontoP
+      usg
+      usgP
+      mamografia
+      mamografiaP
+      eletrocardiograma
+      eletrocardiogramaP
+      clinico
+      clinicoP
+      preventivo
+      preventivoP
+      raiox
+      raioxP
     }
-    lider {
-      id
-      nome
-      telefone
-    }
-    statusFeira
-    presenca
-    criadoEm
-    cardiologista
-    cardiologistaP
-    ginecologista
-    ginecologistaP
-    ortopedista
-    ortopedistaP
-    urologista
-    urologistaP
-    oftalmologista
-    oftalmologistaP
-    odonto
-    odontoP
-    usg
-    usgP
-    mamografia
-    mamografiaP
-    eletrocardiograma
-    eletrocardiogramaP
-    clinico
-    clinicoP
-    preventivo
-    preventivoP
   }
-}
 `;
 
 interface ParticipacoesList {
@@ -90,6 +92,8 @@ interface ParticipacoesList {
     clinicoP?: boolean;
     preventivo?: boolean;
     preventivoP?: boolean;
+    raiox?: boolean;
+    raioxP?: boolean;
   }>;
 }
 
@@ -106,44 +110,46 @@ export function useParticipacoes() {
 
 const GET_PARTICIPACAO_ID = gql`
   query Participacao($participacaoId: ID!) {
-  participacao(id: $participacaoId) {
-    id
-    paciente {
+    participacao(id: $participacaoId) {
       id
-      nome
+      paciente {
+        id
+        nome
+      }
+      lider {
+        id
+        nome
+      }
+      statusFeira
+      presenca
+      criadoEm
+      cardiologista
+      ginecologista
+      ortopedista
+      urologista
+      oftalmologista
+      odonto
+      usg
+      mamografia
+      eletrocardiograma
+      clinico
+      cardiologistaP
+      clinicoP
+      eletrocardiogramaP
+      ginecologistaP
+      liderId
+      mamografiaP
+      odontoP
+      oftalmologistaP
+      ortopedistaP
+      preventivo
+      preventivoP
+      urologistaP
+      usgP
+      raiox
+      raioxP
     }
-    lider {
-      id
-      nome
-    }
-    statusFeira
-    presenca
-    criadoEm
-    cardiologista
-    ginecologista
-    ortopedista
-    urologista
-    oftalmologista
-    odonto
-    usg
-    mamografia
-    eletrocardiograma
-    clinico
-    cardiologistaP
-    clinicoP
-    eletrocardiogramaP
-    ginecologistaP
-    liderId
-    mamografiaP
-    odontoP
-    oftalmologistaP
-    ortopedistaP
-    preventivo
-    preventivoP
-    urologistaP
-    usgP
   }
-}
 `;
 
 interface ParticipacaoProps {
@@ -166,7 +172,7 @@ interface ParticipacaoProps {
     statusFeira: string;
     presenca: boolean;
     criadoEm: string;
-   cardiologista?: boolean;
+    cardiologista?: boolean;
     cardiologistaP?: boolean;
     ginecologista?: boolean;
     ginecologistaP?: boolean;
@@ -188,6 +194,8 @@ interface ParticipacaoProps {
     clinicoP?: boolean;
     preventivo?: boolean;
     preventivoP?: boolean;
+    raiox?: boolean;
+    raioxP?: boolean;
   };
 }
 

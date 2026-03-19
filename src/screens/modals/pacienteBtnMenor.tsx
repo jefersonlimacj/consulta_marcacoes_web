@@ -1,5 +1,5 @@
 import { CircleX, Loader2, UserRoundPlus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useCreatePaciente } from "../../hook/usePaciente";
 
@@ -52,6 +52,18 @@ export function BtnCadastrarPacienteMenor() {
       setTelefoneS("");
     }
   };
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [open]);
+
   return (
     <>
       <BtnCadastrar onClick={() => setOpen(true)}>
@@ -118,6 +130,7 @@ export function BtnCadastrarPacienteMenor() {
             largura="100%"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
+            inputRef={inputRef}
           />
           <TextoEntrada
             placeholder="Insira aqui nº do SUS"
@@ -194,12 +207,14 @@ function TextoEntrada({
   value,
   type,
   largura,
+  inputRef,
 }: {
   placeholder: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
   type: string;
   largura: string;
+  inputRef?: any;
 }) {
   return (
     <div
@@ -215,6 +230,7 @@ function TextoEntrada({
     >
       <input
         type={type}
+        ref={inputRef}
         placeholder={placeholder}
         onChange={onChange}
         value={value}

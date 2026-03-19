@@ -713,8 +713,12 @@ function DetalhesEspecialidades({ p }: { p: any }) {
             preventivo.filter((s: any) => s.statusFeira === "PENDENTE").length +
             preventivo.filter((s: any) => s.statusFeira === "AGUARDANDO").length
           }
-          C={preventivo.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
-          c={preventivo.filter((s: any) => s.statusFeira === "CANCELADA").length}
+          C={
+            preventivo.filter((s: any) => s.statusFeira === "CONFIRMADA").length
+          }
+          c={
+            preventivo.filter((s: any) => s.statusFeira === "CANCELADA").length
+          }
           Max={80}
           tA={0}
         />

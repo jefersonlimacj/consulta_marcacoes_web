@@ -61,6 +61,18 @@ export function BtnNovaParticipacao() {
     clinico: clinico,
     preventivo: preventivo,
     raiox: raiox,
+    cardiologistaP: null,
+    odontoP: null,
+    mamografiaP: null,
+    ginecologistaP: null,
+    eletrocardiogramaP: null,
+    oftalmologistaP: null,
+    ortopedistaP: null,
+    urologistaP: null,
+    usgP: null,
+    clinicoP: null,
+    preventivoP: null,
+    raioxP: null,
   };
 
   const { createParticipacao } = useCreateParticipacao();

@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { useMutation, useQuery } from "@apollo/client/react";
 
 const GET_PARTICIPACOES = gql`
-  query Participacoes {
+ query Participacoes {
   participacoes {
     id
     paciente {
@@ -23,15 +23,27 @@ const GET_PARTICIPACOES = gql`
     presenca
     criadoEm
     cardiologista
+    cardiologistaP
     ginecologista
+    ginecologistaP
     ortopedista
+    ortopedistaP
     urologista
+    urologistaP
     oftalmologista
+    oftalmologistaP
     odonto
+    odontoP
     usg
+    usgP
     mamografia
+    mamografiaP
     eletrocardiograma
+    eletrocardiogramaP
     clinico
+    clinicoP
+    preventivo
+    preventivoP
   }
 }
 `;
@@ -57,15 +69,27 @@ interface ParticipacoesList {
     presenca: boolean;
     criadoEm: string;
     cardiologista?: boolean;
+    cardiologistaP?: boolean;
     ginecologista?: boolean;
+    ginecologistaP?: boolean;
     ortopedista?: boolean;
+    ortopedistaP?: boolean;
     urologista?: boolean;
+    urologistaP?: boolean;
     oftalmologista?: boolean;
+    oftalmologistaP?: boolean;
     odonto?: boolean;
+    odontoP?: boolean;
     usg?: boolean;
+    usgP?: boolean;
     mamografia?: boolean;
+    mamografiaP?: boolean;
     eletrocardiograma?: boolean;
+    eletrocardiogramaP?: boolean;
     clinico?: boolean;
+    clinicoP?: boolean;
+    preventivo?: boolean;
+    preventivoP?: boolean;
   }>;
 }
 
@@ -82,37 +106,44 @@ export function useParticipacoes() {
 
 const GET_PARTICIPACAO_ID = gql`
   query Participacao($participacaoId: ID!) {
-    participacao(id: $participacaoId) {
+  participacao(id: $participacaoId) {
+    id
+    paciente {
       id
-      paciente {
-        id
-        nome
-        cpf
-        dataNascimento
-        telefone
-        telefoneS
-        nSus
-      }
-      lider {
-        nome
-        telefone
-        id
-      }
-      statusFeira
-      presenca
-      criadoEm
-      cardiologista
-      ginecologista
-      ortopedista
-      urologista
-      oftalmologista
-      odonto
-      usg
-      mamografia
-      eletrocardiograma
-      clinico
+      nome
     }
+    lider {
+      id
+      nome
+    }
+    statusFeira
+    presenca
+    criadoEm
+    cardiologista
+    ginecologista
+    ortopedista
+    urologista
+    oftalmologista
+    odonto
+    usg
+    mamografia
+    eletrocardiograma
+    clinico
+    cardiologistaP
+    clinicoP
+    eletrocardiogramaP
+    ginecologistaP
+    liderId
+    mamografiaP
+    odontoP
+    oftalmologistaP
+    ortopedistaP
+    preventivo
+    preventivoP
+    urologistaP
+    usgP
   }
+}
 `;
 
 interface ParticipacaoProps {
@@ -135,16 +166,28 @@ interface ParticipacaoProps {
     statusFeira: string;
     presenca: boolean;
     criadoEm: string;
-    cardiologista?: boolean;
+   cardiologista?: boolean;
+    cardiologistaP?: boolean;
     ginecologista?: boolean;
+    ginecologistaP?: boolean;
     ortopedista?: boolean;
+    ortopedistaP?: boolean;
     urologista?: boolean;
+    urologistaP?: boolean;
     oftalmologista?: boolean;
+    oftalmologistaP?: boolean;
     odonto?: boolean;
+    odontoP?: boolean;
     usg?: boolean;
+    usgP?: boolean;
     mamografia?: boolean;
+    mamografiaP?: boolean;
     eletrocardiograma?: boolean;
+    eletrocardiogramaP?: boolean;
     clinico?: boolean;
+    clinicoP?: boolean;
+    preventivo?: boolean;
+    preventivoP?: boolean;
   };
 }
 

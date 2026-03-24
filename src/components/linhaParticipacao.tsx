@@ -74,19 +74,20 @@ export function LinhaParticipacao({ onClick, p }: LinhaParticipacaoProps) {
           {inforEspecialidade(p?.ginecologista)}
         </div>
         <div style={{ width: "10%" }}>{inforEspecialidade(p?.ortopedista)}</div>
-        <div style={{ width: "10%" }}>{inforEspecialidade(p?.urologista)}</div>
         <div style={{ width: "10%" }}>
           {inforEspecialidade(p?.oftalmologista)}
         </div>
         <div style={{ width: "10%" }}>{inforEspecialidade(p?.odonto)}</div>
         <div style={{ width: "10%" }}>{inforEspecialidade(p?.usg)}</div>
-        <div style={{ width: "10%" }}>{inforEspecialidade(p?.mamografia)}</div>
+        <div style={{ width: "10%" }}>{inforEspecialidade(p?.preventivo)}</div>
+        <div style={{ width: "10%" }}>{inforEspecialidade(p?.raiox)}</div>
+        <div style={{height: "80%", width:"2%", borderRightColor:"#555555"}}> | </div>
         <div style={{ width: "10%" }}>
           {inforEspecialidade(p?.eletrocardiograma)}
         </div>
+        <div style={{ width: "10%" }}>{inforEspecialidade(p?.mamografia)}</div>
         <div style={{ width: "10%" }}>{inforEspecialidade(p?.clinico)}</div>
-        <div style={{ width: "10%" }}>{inforEspecialidade(p?.preventivo)}</div>
-        <div style={{ width: "10%" }}>{inforEspecialidade(p?.raiox)}</div>
+        <div style={{ width: "10%" }}>{inforEspecialidade(p?.urologista)}</div>
       </div>
       <div
         style={{

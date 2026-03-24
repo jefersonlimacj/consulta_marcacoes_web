@@ -997,20 +997,6 @@ function Participacoes() {
             alignItems: "center",
           }}
         >
-          Urologista
-        </div>
-        <div
-          style={{
-            width: "8.3%",
-            borderRight: "1px solid #999",
-            paddingLeft: 3,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
           Oftalmologista
         </div>
         <div
@@ -1044,6 +1030,46 @@ function Participacoes() {
         <div
           style={{
             width: "8.3%",
+            overflow: "hidden",
+            borderRight: "1px solid #999",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          Preventivo
+        </div>
+        <div
+          style={{
+            width: "8.3%",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          Raio - X
+        </div>
+        
+        <div style={{height: "100%", width:"2%", borderRightColor:"#555555"}}> | </div>
+        <div
+          style={{
+            width: "8.3%",
+            overflow: "hidden",
+            borderRight: "1px solid #999",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          ECG
+        </div>
+        <div
+          style={{
+            width: "8.3%",
             borderRight: "1px solid #999",
             paddingLeft: 3,
             overflow: "hidden",
@@ -1066,37 +1092,12 @@ function Participacoes() {
             alignItems: "center",
           }}
         >
-          ECG
-        </div>
-        <div
-          style={{
-            width: "8.3%",
-            overflow: "hidden",
-            borderRight: "1px solid #999",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
           Clínico
         </div>
         <div
           style={{
             width: "8.3%",
-            overflow: "hidden",
-            borderRight: "1px solid #999",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          Preventivo
-        </div>
-        <div
-          style={{
-            width: "8.3%",
+            paddingLeft: 3,
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
@@ -1104,7 +1105,7 @@ function Participacoes() {
             alignItems: "center",
           }}
         >
-          Raio - X
+          Urologista
         </div>
       </div>
       <div style={{ width: "5%", paddingLeft: 5 }}>
@@ -1213,11 +1214,11 @@ function Pacientes() {
   const [pacienteSelecionado, setPacienteSelecionado] = useState<any>();
   const listaOrdenada = participacoes
     ? [...participacoes].sort((a, b) =>
-        (a?.paciente?.nome ?? "").localeCompare(
-          b?.paciente?.nome ?? "",
-          "pt-BR",
-        ),
-      )
+      (a?.paciente?.nome ?? "").localeCompare(
+        b?.paciente?.nome ?? "",
+        "pt-BR",
+      ),
+    )
     : [];
   return (
     <div
@@ -1492,11 +1493,11 @@ function Especialidades() {
   const { participacoes } = useParticipacoes();
   const listaOrdenada = participacoes
     ? [...participacoes].sort((a, b) =>
-        (a?.paciente?.nome ?? "").localeCompare(
-          b?.paciente?.nome ?? "",
-          "pt-BR",
-        ),
-      )
+      (a?.paciente?.nome ?? "").localeCompare(
+        b?.paciente?.nome ?? "",
+        "pt-BR",
+      ),
+    )
     : [];
 
   const listaFiltrada = listaOrdenada.filter((p: any) => {
@@ -1629,12 +1630,12 @@ function Especialidades() {
                   : "Sem telefone"}
               </p>
               <p style={{ fontSize: 13, fontWeight: 500 }}>
-               Nº SUS {p?.paciente?.telefone
+                Nº SUS {p?.paciente?.telefone
                   ? formatarNumeroSus(p?.paciente?.nSus)
                   : "Sem telefone"}
               </p>
               <p style={{ fontSize: 13, fontWeight: 500 }}>
-               Telefone: {p?.paciente?.telefone
+                Telefone: {p?.paciente?.telefone
                   ? formatarTelefone(p?.paciente?.telefone)
                   : "Sem telefone"}
               </p>

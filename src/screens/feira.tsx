@@ -1,4 +1,14 @@
-import { Loader2, LogOut, Square, SquareCheckBig } from "lucide-react";
+import {
+  BadgeCheck,
+  CalendarCheck,
+  ClipboardClock,
+  Loader2,
+  LogOut,
+  PhoneOff,
+  Square,
+  SquareCheckBig,
+  UserRoundX,
+} from "lucide-react";
 import { BarChart, ResponsiveContainer } from "recharts";
 import { useState, type JSX } from "react";
 import styled from "styled-components";
@@ -576,7 +586,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
             ginecologista.filter((s: any) => s.statusFeira === "CANCELADA")
               .length
           }
-          Max={70}
+          Max={90}
           tA={0}
         />
         <LinhaEspecialidade
@@ -611,7 +621,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           c={
             urologista.filter((s: any) => s.statusFeira === "CANCELADA").length
           }
-          Max={70}
+          Max={90}
           tA={0}
         />
         <LinhaEspecialidade
@@ -631,7 +641,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
             oftalmologista.filter((s: any) => s.statusFeira === "CANCELADA")
               .length
           }
-          Max={70}
+          Max={140}
           tA={0}
         />
         <LinhaEspecialidade
@@ -643,7 +653,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           }
           C={odonto.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
           c={odonto.filter((s: any) => s.statusFeira === "CANCELADA").length}
-          Max={40}
+          Max={50}
           tA={0}
         />
         <LinhaEspecialidade
@@ -655,7 +665,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           }
           C={usg.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
           c={usg.filter((s: any) => s.statusFeira === "CANCELADA").length}
-          Max={100}
+          Max={120}
           tA={0}
         />
         <LinhaEspecialidade
@@ -671,7 +681,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           c={
             mamografia.filter((s: any) => s.statusFeira === "CANCELADA").length
           }
-          Max={70}
+          Max={90}
           tA={0}
         />
         <LinhaEspecialidade
@@ -691,7 +701,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
             eletrocardiograma.filter((s: any) => s.statusFeira === "CANCELADA")
               .length
           }
-          Max={80}
+          Max={120}
           tA={0}
         />
         <LinhaEspecialidade
@@ -703,7 +713,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           }
           C={clinico.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
           c={clinico.filter((s: any) => s.statusFeira === "CANCELADA").length}
-          Max={80}
+          Max={100}
           tA={0}
         />
         <LinhaEspecialidade
@@ -719,7 +729,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           c={
             preventivo.filter((s: any) => s.statusFeira === "CANCELADA").length
           }
-          Max={80}
+          Max={70}
           tA={0}
         />
         <LinhaEspecialidade
@@ -748,7 +758,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           p={pendentes}
           C={confirmados}
           c={cancelados}
-          Max={880}
+          Max={1090}
           tA={0}
         />
       </div>
@@ -1476,6 +1486,217 @@ function Pacientes() {
   );
 }
 
+function Especialidades() {
+  const [especialidade, setEspecialidade] = useState<any>();
+
+  const { participacoes } = useParticipacoes();
+  const listaOrdenada = participacoes
+    ? [...participacoes].sort((a, b) =>
+        (a?.paciente?.nome ?? "").localeCompare(
+          b?.paciente?.nome ?? "",
+          "pt-BR",
+        ),
+      )
+    : [];
+
+  const listaFiltrada = listaOrdenada.filter((p: any) => {
+    switch (especialidade) {
+      case "cardiologista":
+        return p.cardiologista;
+      case "odonto":
+        return p.odonto;
+      case "mamografia":
+        return p.mamografia;
+      case "ginecologista":
+        return p.ginecologista;
+      case "eletrocardiograma":
+        return p.ecg;
+      case "oftalmologista":
+        return p.oftalmologista;
+      case "ortopedista":
+        return p.ortopedista;
+      case "urologista":
+        return p.urologista;
+      case "usg":
+        return p.usg;
+      case "clinico":
+        return p.clinico;
+      case "preventivo":
+        return p.preventivo;
+      case "raiox":
+        return p.raiox;
+      default:
+        return true;
+    }
+  });
+
+  return (
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "auto",
+        scrollbarWidth: "none",
+        padding: 10,
+        gap: 10,
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          gap: 20,
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+      >
+        <p>Paciente:</p>
+        <div
+          style={{
+            width: "50%",
+            padding: 10,
+            backgroundColor: "#FFFFFF90",
+            display: "flex",
+            borderRadius: 14,
+          }}
+        >
+          <select
+            style={{ width: "100%", outline: "none", border: "none" }}
+            name=""
+            id=""
+            onChange={(e) => {
+              setEspecialidade(e.target.value);
+            }}
+          >
+            <option value="">Selecione uma Especialidade</option>
+            <option value="cardiologista">Cardiologista</option>
+            <option value="odonto">Odonto</option>
+            <option value="mamografia">Mamografia</option>
+            <option value="ginecologista">Ginecologista</option>
+            <option value="eletrocardiograma">ECG</option>
+            <option value="oftalmologista">Oftalmo</option>
+            <option value="ortopedista">Ortopedista</option>
+            <option value="urologista">Urologista</option>
+            <option value="usg">USG</option>
+            <option value="clinico">Clínico</option>
+            <option value="preventivo">Preventivo</option>
+            <option value="raiox">Raio -X</option>
+          </select>
+        </div>
+      </div>
+      {listaFiltrada.map((p: any) => {
+        return (
+          <div
+            style={{
+              width: "100%",
+              padding: 8,
+              backgroundColor: "#FFFFFF50",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              borderRadius: 12,
+              margin: 5,
+              backdropFilter: "blur(5px)",
+              cursor: "pointer",
+              zIndex: 10,
+            }}
+          >
+            <p
+              style={{
+                width: "30%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {p?.paciente?.nome}
+            </p>
+            <div
+              style={{
+                width: "40%",
+                paddingLeft: 10,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <p style={{ fontSize: 13, fontWeight: 500 }}>
+                CPF: {p?.paciente?.cpf
+                  ? formatarCPF(p?.paciente?.cpf)
+                  : "Sem telefone"}
+              </p>
+              <p style={{ fontSize: 13, fontWeight: 500 }}>
+               Nº SUS {p?.paciente?.telefone
+                  ? formatarNumeroSus(p?.paciente?.nSus)
+                  : "Sem telefone"}
+              </p>
+              <p style={{ fontSize: 13, fontWeight: 500 }}>
+               Telefone: {p?.paciente?.telefone
+                  ? formatarTelefone(p?.paciente?.telefone)
+                  : "Sem telefone"}
+              </p>
+            </div>
+            <div
+              style={{
+                width: "5%",
+                borderLeft: "1px solid #00000020",
+                paddingLeft: 10,
+              }}
+            >
+              {inforStatus(p?.statusFeira)}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function inforStatus(s: string) {
+  return (
+    <div
+      style={{
+        width: "90%",
+        height: "100%",
+        backgroundColor:
+          s === "AGUARDANDO"
+            ? "#FFFFFF"
+            : s === "PENDENTE"
+              ? "#FADB61"
+              : s === "CONFIRMADA"
+                ? "#8EFA55"
+                : s === "CANCELADA"
+                  ? "#FA4829"
+                  : s === "CONCLUIDO"
+                    ? "#5663FA"
+                    : "#00000020",
+
+        padding: 5,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 8,
+      }}
+      title={s}
+    >
+      {s === "AGUARDANDO" ? (
+        <ClipboardClock size={20} />
+      ) : s === "PENDENTE" ? (
+        <PhoneOff size={20} />
+      ) : s === "CONFIRMADA" ? (
+        <CalendarCheck size={20} />
+      ) : s === "CANCELADA" ? (
+        <UserRoundX size={20} color="#FFEE90" strokeWidth={2} />
+      ) : s === "CONCLUIDO" ? (
+        <BadgeCheck size={20} color="#91FAD1" strokeWidth={3} />
+      ) : null}
+    </div>
+  );
+}
+
 interface BtnEspecialidadesProps {
   $cor: string;
   $cor2?: string;
@@ -1618,6 +1839,12 @@ function FeiradeSaudeMenu({ setConteudo }: FeiradeSaudeMenuProps) {
           $cor={"#15ff78"}
         >
           <p>Pacientes</p>
+        </BtnMenuStyle>
+        <BtnMenuStyle
+          onClick={() => setConteudo(<Especialidades />)}
+          $cor={"#15ff78"}
+        >
+          <p>Especialidades</p>
         </BtnMenuStyle>
       </div>
       <BtnMenuStyle

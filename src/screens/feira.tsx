@@ -190,21 +190,25 @@ function LinhaGraficos({ p }: { p: any }) {
   const mamografia = p.filter((s: any) => s.mamografia === true);
   const eletrocardiograma = p.filter((s: any) => s.eletrocardiograma === true);
   const clinico = p.filter((s: any) => s.clinico === true);
+  const preventivo = p.filter((s: any) => s.preventivo === true);
+  const raiox = p.filter((s: any) => s.raiox === true)
 
   const dataEspecialidades = [
     { name: "Cardiologista", value: cardiologista.length, fill: "#8efa55" }, // Amarelo
     { name: "Ginecologista", value: ginecologista.length, fill: "#8efa55" }, // Amarelo
     { name: "Ortopedista", value: ortopedista.length, fill: "#8efa55" }, // Amarelo
-    { name: "Urologista", value: urologista.length, fill: "#8efa55" }, // Amarelo
+    // { name: "Urologista", value: urologista.length, fill: "#8efa55" }, // Amarelo
     { name: "Oftalmologista", value: oftalmologista.length, fill: "#8efa55" }, // Amarelo
     { name: "Odontologista", value: odonto.length, fill: "#8efa55" }, // Vermelho
     { name: "USG", value: usg.length, fill: "#8efa55" }, // Verde
     { name: "Mamografia", value: mamografia.length, fill: "#8efa55" }, // Vermelho
     { name: "ECG", value: eletrocardiograma.length, fill: "#8efa55" }, // Vermelho
-    { name: "Clínico", value: clinico.length, fill: "#8efa55" }, // Vermelho
+    // { name: "Clínico", value: clinico.length, fill: "#8efa55" }, // Vermelho
+    { name: "Preventivo", value: preventivo.length, fill: "#8efa55" }, // Vermelho
+    { name: "Raio-X", value: raiox.length, fill: "#8efa55" }, // Vermelho
   ].sort((a, b) => b.value - a.value);
 
-  const customTicks = Array.from({ length: 21 }, (_, i) => i * 5);
+  const customTicks = Array.from({ length: 30 }, (_, i) => i * 5);
 
   return (
     <div
@@ -665,7 +669,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           }
           C={usg.filter((s: any) => s.statusFeira === "CONFIRMADA").length}
           c={usg.filter((s: any) => s.statusFeira === "CANCELADA").length}
-          Max={120}
+          Max={150}
           tA={0}
         />
         <LinhaEspecialidade
@@ -758,7 +762,7 @@ function DetalhesEspecialidades({ p }: { p: any }) {
           p={pendentes}
           C={confirmados}
           c={cancelados}
-          Max={1090}
+          Max={1120}
           tA={0}
         />
       </div>
@@ -1052,8 +1056,8 @@ function Participacoes() {
         >
           Raio - X
         </div>
-        
-        <div style={{height: "100%", width:"2%", borderRightColor:"#555555"}}> | </div>
+
+        <div style={{ height: "100%", width: "2%", borderRightColor: "#555555" }}> | </div>
         <div
           style={{
             width: "8.3%",

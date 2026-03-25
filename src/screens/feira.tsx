@@ -183,13 +183,13 @@ function LinhaGraficos({ p }: { p: any }) {
   const cardiologista = p.filter((s: any) => s.cardiologista === true);
   const ginecologista = p.filter((s: any) => s.ginecologista === true);
   const ortopedista = p.filter((s: any) => s.ortopedista === true);
-  const urologista = p.filter((s: any) => s.urologista === true);
+  // const urologista = p.filter((s: any) => s.urologista === true);
   const oftalmologista = p.filter((s: any) => s.oftalmologista === true);
   const odonto = p.filter((s: any) => s.odonto === true);
   const usg = p.filter((s: any) => s.usg === true);
   const mamografia = p.filter((s: any) => s.mamografia === true);
   const eletrocardiograma = p.filter((s: any) => s.eletrocardiograma === true);
-  const clinico = p.filter((s: any) => s.clinico === true);
+  // const clinico = p.filter((s: any) => s.clinico === true);
   const preventivo = p.filter((s: any) => s.preventivo === true);
   const raiox = p.filter((s: any) => s.raiox === true)
 
